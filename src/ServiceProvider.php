@@ -1,6 +1,5 @@
 <?php
 
-
 namespace LaravelDomainOriented;
 
 use Illuminate\Support\ServiceProvider as LaravelServiceProvider;

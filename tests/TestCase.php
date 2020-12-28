@@ -1,10 +1,23 @@
 <?php
 
-namespace Tests;
+namespace LaravelDomainOriented\Tests;
 
-use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use LaravelDomainOriented\ServiceProvider;
 
-abstract class TestCase extends BaseTestCase
+class TestCase extends \Orchestra\Testbench\TestCase
 {
-    use CreatesApplication;
+    public function setUp(): void {
+        parent::setUp();
+        // additional setup
+    }
+
+    protected function getPackageProviders($app) {
+        return [
+            ServiceProvider::class,
+        ];
+    }
+
+    protected function getEnvironmentSetUp($app) {
+        // perform environment setup
+    }
 }
