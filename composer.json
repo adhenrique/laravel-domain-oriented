@@ -1,0 +1,32 @@
+{
+    "name": "adhenrique/laravel-domain-oriented",
+    "version": "1.0.0",
+    "description": "Build a domain-oriented application on Laravel Framework",
+    "homepage": "https://github.com/adhenrique/laravel-domain-oriented",
+    "keywords": [
+        "ddd",
+        "domain driven design",
+        "domain oriented",
+        "laravel",
+        "domain builder",
+        "laravel package",
+        "laravel library"
+    ],
+    "authors": [
+        {
+            "name": "Adenilton Henrique Ribeiro",
+            "email": "eu@adhenrique.com.br",
+            "homepage": "https://adhenrique.com.br",
+            "role": "Developer"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "LaravelDomainOriented\\": "src/"
+        }
+    },
+    "require": {},
+    "require-dev": {
+        "laravel/framework": "^8.19"
+    }
+}
