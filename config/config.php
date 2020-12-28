@@ -1,3 +1,5 @@
 <?php
 
-$language = 'en';
+return [
+    'language' => 'en',
+];

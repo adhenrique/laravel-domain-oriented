@@ -9,18 +9,21 @@ class ServiceProvider extends LaravelServiceProvider
     public function boot()
     {
         $this->publishes([
-            __DIR__.'/../config.php' => config_path('laravel-domain-oriented.php'),
+            __DIR__.'/../config/config.php' => config_path('laravel-domain-oriented.php'),
         ], 'config');
 
         $this->publishes([
             __DIR__.'/../resources/lang' => resource_path('lang/vendor/laravel-domain-oriented'),
         ], 'lang');
+
+        // only to test
+        $this->loadRoutesFrom(__DIR__.'/../routes/test.php');
     }
 
     public function register()
     {
         $this->mergeConfigFrom(
-            __DIR__.'/../config.php', 'laravel-domain-oriented'
+            __DIR__.'/../config/config.php', 'laravel-domain-oriented'
         );
     }
 }
