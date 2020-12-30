@@ -1,0 +1,22 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Domain\{{singularName}}\{{singularName}}DataService;
+use App\Domain\{{singularName}}\{{singularName}}PersistenceService;
+use App\Domain\{{singularName}}\{{singularName}}Resource;
+use App\Domain\{{singularName}}\{{singularName}}SearchService;
+use LaravelDomainOriented\Controller\Controller;
+
+class {{singularName}}Controller extends Controller
+{
+    protected $resource = {{singularName}}Resource::class;
+
+    public function __construct(
+        {{singularName}}PersistenceService $persistenceService,
+        {{singularName}}SearchService $searchService
+    ) {
+        $this->persistenceService = $persistenceService;
+        $this->searchService = $searchService;
+    }
+}

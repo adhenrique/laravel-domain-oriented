@@ -3,6 +3,7 @@
 namespace LaravelDomainOriented;
 
 use Illuminate\Support\ServiceProvider as LaravelServiceProvider;
+use LaravelDomainOriented\Commands\DomainBuilder;
 
 class ServiceProvider extends LaravelServiceProvider
 {
@@ -12,12 +13,14 @@ class ServiceProvider extends LaravelServiceProvider
             __DIR__.'/../config/config.php' => config_path('laravel-domain-oriented.php'),
         ], 'config');
 
+        $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'lang');
         $this->publishes([
             __DIR__.'/../resources/lang' => resource_path('lang/vendor/laravel-domain-oriented'),
         ], 'lang');
 
-        // only to test
-        $this->loadRoutesFrom(__DIR__.'/../routes/test.php');
+        $this->commands([
+            DomainBuilder::class,
+        ]);
     }
 
     public function register()
