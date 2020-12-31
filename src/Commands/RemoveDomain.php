@@ -2,8 +2,6 @@
 
 namespace LaravelDomainOriented\Commands;
 
-use Illuminate\Console\Command;
-
 class RemoveDomain extends Command
 {
     protected array $names;
@@ -14,26 +12,16 @@ class RemoveDomain extends Command
     public function handle(): int
     {
         $name = $this->getNameInput();
-        // ask to remove
-        // todo
+        $this->builder->setNames($name);
 
-        return 0;
-    }
+        $remove = $this->confirm($this->getTransMessage('remove_ask', ['domain' => $name]));
 
-    protected function getNameInput(): string
-    {
-        return trim($this->argument('name'));
-    }
+        if (!$remove) {
+            return $this->exit();
+        }
 
-    protected function exit()
-    {
-        $this->line('');
-        $this->line($this->getTransMessage('exit'));
-        $this->line('');
-    }
+        $this->builder->clear();
 
-    private function getTransMessage($slug)
-    {
-        return trans("lang::messages.{$slug}");
+        return $this->finish();
     }
 }

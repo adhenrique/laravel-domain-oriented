@@ -16,11 +16,9 @@ class Builder
     ];
     private Collection $names;
 
-    public function __construct(Filesystem $filesystem, string $name = 'Dummy')
+    public function __construct(Filesystem $filesystem)
     {
         $this->filesystem = $filesystem;
-        $this->setNames($name);
-        $this->createDomainFolder();
     }
 
     public function prepare(): array
@@ -76,7 +74,7 @@ class Builder
             : __DIR__.$relativePath;
     }
 
-    public function setNames(string $name): void
+    public function setNames(string $name = 'Dummy'): void
     {
         $name = str_replace('_', ' ', trim($name));
         $name = str_replace('  ', ' ', $name);

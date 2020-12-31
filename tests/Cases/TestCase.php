@@ -1,10 +1,10 @@
 <?php
 
-namespace LaravelDomainOriented\Tests;
+namespace LaravelDomainOriented\Tests\Cases;
 
 use LaravelDomainOriented\ServiceProvider;
 
-class TestCase extends \Orchestra\Testbench\TestCase
+abstract class TestCase extends \Orchestra\Testbench\TestCase
 {
     public function setUp(): void {
         parent::setUp();

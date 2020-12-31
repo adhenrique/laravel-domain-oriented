@@ -5,7 +5,7 @@ namespace Tests\Unit;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Enumerable;
 use LaravelDomainOriented\Builder;
-use LaravelDomainOriented\Tests\TestCase;
+use LaravelDomainOriented\Tests\Cases\TestCase;
 
 class BuilderTest extends TestCase
 {
@@ -21,6 +21,8 @@ class BuilderTest extends TestCase
         parent::setUp();
         $this->filesystem = new Filesystem();
         $this->builder = new Builder($this->filesystem);
+        $this->builder->setNames();
+        $this->builder->createDomainFolder();
     }
 
     /** @test **/

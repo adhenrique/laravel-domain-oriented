@@ -4,6 +4,7 @@ namespace LaravelDomainOriented;
 
 use Illuminate\Support\ServiceProvider as LaravelServiceProvider;
 use LaravelDomainOriented\Commands\CreateDomain;
+use LaravelDomainOriented\Commands\RemoveDomain;
 
 class ServiceProvider extends LaravelServiceProvider
 {
@@ -20,6 +21,7 @@ class ServiceProvider extends LaravelServiceProvider
 
         $this->commands([
             CreateDomain::class,
+            RemoveDomain::class,
         ]);
     }
 

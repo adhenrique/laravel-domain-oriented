@@ -5,7 +5,7 @@ namespace Tests\Feature;
 use Illuminate\Console\OutputStyle;
 use Illuminate\Filesystem\Filesystem;
 use LaravelDomainOriented\Commands\CreateDomain;
-use LaravelDomainOriented\Tests\TestCase;
+use LaravelDomainOriented\Tests\Cases\TestCase;
 use Symfony\Component\Console\Application as ConsoleApplication;
 use Illuminate\Foundation\Application;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -45,9 +45,7 @@ class CreateDomainTest extends TestCase
         });
 
         $tester->setInputs($inputs);
-        $tester->execute(array_merge([
-            'command' => 'make:domain',
-        ], $opts));
+        $tester->execute($opts);
 
         return $tester;
     }

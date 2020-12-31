@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use LaravelDomainOriented\Tests\TestCase;
+use LaravelDomainOriented\Tests\Cases\TestCase;
 
 class ControllerTest extends TestCase
 {
