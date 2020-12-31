@@ -27,8 +27,8 @@ class Builder
     {
         $exists = [];
         foreach ($this->filesPaths as $stubName => $finalPath) {
-            if ($this->validate($stubName, $finalPath)) {
-                $exists[] = $this->validate($stubName, $finalPath);
+            if ($file = $this->validate($stubName, $finalPath)) {
+                $exists[] = $file;
             }
         }
 
@@ -124,7 +124,7 @@ class Builder
         list($path, $fileName) = $this->getPathAndFile($stubName, $finalPath);
         $file = $path.$fileName;
 
-        return $this->filesystem->exists($file) ? $finalPath.$fileName : null;
+        return $this->filesystem->exists($file) ? $file : null;
     }
 
     public function getPathAndFile(string $stubName, string $finalPath): array

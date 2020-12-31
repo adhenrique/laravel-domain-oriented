@@ -3,7 +3,7 @@
 namespace LaravelDomainOriented;
 
 use Illuminate\Support\ServiceProvider as LaravelServiceProvider;
-use LaravelDomainOriented\Commands\DomainBuilder;
+use LaravelDomainOriented\Commands\CreateDomain;
 
 class ServiceProvider extends LaravelServiceProvider
 {
@@ -19,7 +19,7 @@ class ServiceProvider extends LaravelServiceProvider
         ], 'lang');
 
         $this->commands([
-            DomainBuilder::class,
+            CreateDomain::class,
         ]);
     }
 

@@ -4,17 +4,17 @@ namespace LaravelDomainOriented\Commands;
 
 use Illuminate\Console\Command;
 
-class DomainBuilder extends Command
+class RemoveDomain extends Command
 {
     protected array $names;
-    protected $signature = 'make:domain
-                            {name : The domain name}
-                            {--force : Force re-create domain structure}';
-    protected $description = 'Create new domain structure.';
+    protected $signature = 'domain:remove
+                            {name : The domain name}';
+    protected $description = 'Remove domain structure.';
 
     public function handle(): int
     {
         $name = $this->getNameInput();
+        // ask to remove
         // todo
 
         return 0;
