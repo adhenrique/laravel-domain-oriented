@@ -15,7 +15,7 @@ class FilterService
     public function apply(Builder $builder, Request $request): Builder
     {
         $this->builder = $builder;
-        foreach ($request->all() as $field => $value) {
+        foreach ($request->get('filters', []) as $field => $value) {
             if ($field === 'or') {
                 // todo - create a logic to this
             }

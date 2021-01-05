@@ -32,7 +32,8 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "LaravelDomainOriented\\Tests\\": "tests"
+            "LaravelDomainOriented\\Tests\\": "tests",
+            "App\\": "vendor/orchestra/testbench-core/laravel/app"
         }
     },
     "scripts": {

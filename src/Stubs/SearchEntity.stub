@@ -1,0 +1,22 @@
+<?php
+
+namespace App\Domain\{{singularName}};
+
+use Illuminate\Database\Eloquent\SoftDeletes;
+use LaravelDomainOriented\Models\Model;
+
+class {{singularName}}SearchEntity extends Model
+{
+    protected $table = '{{tableName}}';
+
+    protected $fillable = [
+        'id',
+        'name',
+    ];
+
+    // SCOPES
+    public function scopeDefault($query)
+    {
+        return $query->whereNull('inactivated_by');
+    }
+}

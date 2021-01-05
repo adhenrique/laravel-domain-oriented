@@ -32,17 +32,19 @@ class FilterTest extends TestCase
         $builder2 = new MyEloquentModel();
 
         $this->request->merge([
-            'id' => [1,2,3],
-            'name' => 'test',
-            'outro' => [
-                'operator' => '>',
-                'value' => 1234
-            ],
-            'date' => [
-                'start' => '2020-01-01',
-                'end' => '2021-01-01'
-            ],
-            'test' => 'value',
+            'filters' => [
+                'id' => [1,2,3],
+                'name' => 'test',
+                'outro' => [
+                    'operator' => '>',
+                    'value' => 1234
+                ],
+                'date' => [
+                    'start' => '2020-01-01',
+                    'end' => '2021-01-01'
+                ],
+                'test' => 'value',
+            ]
         ]);
 
         $filterService = new MyFilterService();

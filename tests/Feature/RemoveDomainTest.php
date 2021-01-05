@@ -17,8 +17,12 @@ class RemoveDomainTest extends TestCase
     private Filesystem $filesystem;
     private string $domainName = 'Test';
     private array $filesPaths = [
-        'Controller' => 'Http/Controllers/',
-        'Resource' => 'Domain/%s/',
+        'Controller' => 'app/Http/Controllers/',
+        'Resource' => 'app/Domain/%s/',
+        'SearchEntity' => 'app/Domain/%s/',
+        'SearchService' => 'app/Domain/%s/',
+        'FilterService' => 'app/Domain/%s/',
+        'Migration' => 'database/migrations/',
     ];
 
     public function setUp(): void

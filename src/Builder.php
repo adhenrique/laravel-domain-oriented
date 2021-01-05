@@ -2,17 +2,24 @@
 
 namespace LaravelDomainOriented;
 
+use Carbon\Carbon;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Enumerable;
 use Illuminate\Support\Str;
+use ReflectionException;
+use ReflectionClass;
 
 class Builder
 {
     private Filesystem $filesystem;
     private array $filesPaths = [
-        'Controller' => 'Http/Controllers/',
-        'Resource' => 'Domain/%s/',
+        'Controller' => 'app/Http/Controllers/',
+        'Resource' => 'app/Domain/%s/',
+        'SearchEntity' => 'app/Domain/%s/',
+        'SearchService' => 'app/Domain/%s/',
+        'FilterService' => 'app/Domain/%s/',
+        'Migration' => 'database/migrations/',
     ];
     private Collection $names;
 
@@ -25,12 +32,14 @@ class Builder
     {
         $exists = [];
         foreach ($this->filesPaths as $stubName => $finalPath) {
-            if ($file = $this->validate($stubName, $finalPath)) {
-                $exists[] = $file;
+            if ($stubName !== 'Migration') {
+                $exists[] = $this->checkClassExists($stubName, $finalPath);
+            } else {
+                $exists[] = $this->checkMigrationExists();
             }
         }
 
-        return $exists;
+        return array_filter($exists);
     }
 
     public function run(): void
@@ -51,16 +60,29 @@ class Builder
     {
         $stubFile = $this->filesystem->get($this->getStub($stubName));
         $content = $this->replacePlaceholders($stubFile);
-        list($path, $fileName) = $this->getPathAndFile($stubName, $finalPath);
-        $file = $path.$fileName;
+        $path = base_path(sprintf($finalPath, $this->getDomainName()));
+        $fileName = $this->getName('singularName', 'Dummy') . $stubName . '.php';
 
+        if ($stubName === 'Migration') {
+            $now = Carbon::now()->format('Y_m_d_His');
+            $fileName = $now."_create_{$this->getName('tableName', 'dummies')}_table.php";
+        }
+
+        $file = $path.$fileName;
         $this->filesystem->put($file, $content);
     }
 
+    // todo - we can use glob function as well, for the other files
+    //  passing the domainName concatenated with the stubName ?
     public function removeFile(string $stubName, string $finalPath)
     {
-        list($path, $fileName) = $this->getPathAndFile($stubName, $finalPath);
+        $path = base_path(sprintf($finalPath, $this->getDomainName()));
+        $fileName = $this->getName('singularName', 'Dummy') . $stubName . '.php';
         $file = $path.$fileName;
+
+        if ($stubName === 'Migration') {
+            $file = $this->filesystem->glob($path.'*_create_'.$this->getName('tableName').'_table.php');
+        }
 
         $this->filesystem->delete($file);
     }
@@ -117,20 +139,29 @@ class Builder
         return str_replace('{{tableName}}', $this->names['tableName'], $stubFile);
     }
 
-    private function validate(string $stubName, string $finalPath): ?string
+    private function checkMigrationExists(): string
     {
-        list($path, $fileName) = $this->getPathAndFile($stubName, $finalPath);
-        $file = $path.$fileName;
+        $migrationPath = base_path('database/migrations');
+        $migrationFiles = $this->filesystem->glob($migrationPath.'/*.php');
 
-        return $this->filesystem->exists($file) ? $file : null;
+        $exists = false;
+
+        foreach ($migrationFiles as $migrationFile) {
+            if (Str::contains($migrationFile, 'create_'.$this->getName('tableName').'_table')) {
+                $exists = $migrationFile;
+            }
+        }
+
+        return $exists;
     }
 
-    public function getPathAndFile(string $stubName, string $finalPath): array
+    private function checkClassExists(string $stubName, string $finalPath): string
     {
-        $path = app_path(sprintf($finalPath, $this->getDomainName()));
+        $path = base_path(sprintf($finalPath, $this->getDomainName()));
         $fileName = $this->getName('singularName', 'Dummy') . $stubName . '.php';
+        $file = $path.$fileName;
 
-        return [$path, $fileName];
+        return $this->filesystem->exists($file) ? $file : false;
     }
 
     public function createDomainFolder()

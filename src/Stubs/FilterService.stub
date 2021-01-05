@@ -1,0 +1,10 @@
+<?php
+
+namespace App\Domain\{{singularName}};
+
+use LaravelDomainOriented\Services\FilterService;
+
+class {{singularName}}FilterService extends FilterService
+{
+    protected array $fields = ['id', 'name'];
+}

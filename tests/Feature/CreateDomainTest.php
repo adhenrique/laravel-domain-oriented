@@ -4,6 +4,8 @@ namespace Tests\Feature;
 
 use Illuminate\Console\OutputStyle;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Str;
 use LaravelDomainOriented\Commands\CreateDomain;
 use LaravelDomainOriented\Tests\Cases\TestCase;
 use Symfony\Component\Console\Application as ConsoleApplication;
@@ -15,9 +17,15 @@ class CreateDomainTest extends TestCase
     private CreateDomain $command;
     private Filesystem $filesystem;
     private array $filesPaths = [
-        'Controller' => 'Http/Controllers/',
-        'Resource' => 'Domain/%s/',
+        'Controller' => 'app/Http/Controllers/',
+        'Resource' => 'app/Domain/%s/',
+        'SearchEntity' => 'app/Domain/%s/',
+        'SearchService' => 'app/Domain/%s/',
+        'FilterService' => 'app/Domain/%s/',
+        'Migration' => 'database/migrations/',
     ];
+    private string $domainName = 'Test';
+    private string $tableName = '';
 
     public function setUp(): void
     {
@@ -34,6 +42,7 @@ class CreateDomainTest extends TestCase
         $this->command = new CreateDomain($this->filesystem);
         $this->command->setLaravel($this->app);
         $this->command->setApplication($console);
+        $this->tableName = Str::snake(Str::studly(Str::plural($this->domainName)));
     }
 
     private function runCommand(array $opts = [], array $inputs = []): CommandTester
@@ -59,17 +68,21 @@ class CreateDomainTest extends TestCase
     /** @test **/
     public function it_should_create_structure()
     {
-        $domainName = 'Test';
-        $this->runCommand(['name' => $domainName]);
+        $this->runCommand(['name' => $this->domainName]);
 
         $totalFiles = count($this->filesPaths);
         $createdFiles = 0;
         foreach ($this->filesPaths as $stubName => $finalPath) {
-            $path = app_path(sprintf($finalPath, $domainName));
-            $fileName = $domainName.$stubName.'.php';
+            $path = base_path(sprintf($finalPath, $this->domainName));
+            $fileName = $this->domainName.$stubName.'.php';
             $file = $path.$fileName;
+            $migration = [];
 
-            if ($this->filesystem->exists($file)) {
+            if ($stubName === 'Migration') {
+                $migration = $this->filesystem->glob($path.'*_create_'.$this->tableName.'_table.php');
+            }
+
+            if ($this->filesystem->exists($file) || count($migration)) {
                 $createdFiles++;
             }
         }
@@ -77,14 +90,13 @@ class CreateDomainTest extends TestCase
     }
 
     /** @test  **/
-    public function it_should_rewrite_structure()
+    public function it_should_ask_to_rewrite_structure()
     {
-        $domainName = 'Test';
-        $actualContent = $this->getActualContent($domainName);
+        $actualContent = $this->getActualContent();
 
-        $tester = $this->runCommand(['name' => $domainName], ['yes']);
+        $tester = $this->runCommand(['name' => $this->domainName], ['yes']);
 
-        $rewriteContent = $this->getRewriteContent($domainName);
+        $rewriteContent = $this->getRewriteContent();
 
         $this->assertNotEquals($rewriteContent, $actualContent);
         $this->assertSame(0, $tester->getStatusCode());
@@ -93,49 +105,76 @@ class CreateDomainTest extends TestCase
     /** @test  **/
     public function it_should_force_rewrite_structure()
     {
-        $domainName = 'Test';
-        $actualContent = $this->getActualContent($domainName);
+        $actualContent = $this->getActualContent();
 
-        $tester = $this->runCommand(['name' => $domainName, '--force' => true]);
+        $tester = $this->runCommand(['name' => $this->domainName, '--force' => true], ['yes']);
 
-        $rewriteContent = $this->getRewriteContent($domainName);
+        $rewriteContent = $this->getRewriteContent();
 
         $this->assertNotEquals($rewriteContent, $actualContent);
         $this->assertSame(0, $tester->getStatusCode());
     }
 
-    private function getActualContent(string $domainName): array
+    private function getActualContent(): array
     {
         $actualContent = [];
 
         foreach ($this->filesPaths as $stubName => $finalPath) {
-            $path = app_path(sprintf($finalPath, $domainName));
-            $fileName = $domainName.$stubName.'.php';
+            $path = base_path(sprintf($finalPath, $this->domainName));
+            $fileName = $this->domainName.$stubName.'.php';
             $file = $path.$fileName;
 
-            $this->filesystem->append($file, '//modified');
-            $actualContent[] = [
-                $file => $this->filesystem->get($file),
-            ];
+            if ($stubName === 'Migration') {
+                $migration = $this->filesystem->glob($path.'*_create_'.$this->tableName.'_table.php');
+                $this->filesystem->append($migration[0], '//modified');
+                $actualContent[] = [
+                    $migration[0] => $this->filesystem->get($migration[0]),
+                ];
+            } else {
+                $this->filesystem->append($file, '//modified');
+                $actualContent[] = [
+                    $file => $this->filesystem->get($file),
+                ];
+            }
         }
 
         return $actualContent;
     }
 
-    private function getRewriteContent(string $domainName): array
+    private function getRewriteContent(): array
     {
         $rewriteContent = [];
 
         foreach ($this->filesPaths as $stubName => $finalPath) {
-            $path = app_path(sprintf($finalPath, $domainName));
-            $fileName = $domainName.$stubName.'.php';
+            $path = base_path(sprintf($finalPath, $this->domainName));
+            $fileName = $this->domainName.$stubName.'.php';
             $file = $path.$fileName;
 
-            $rewriteContent[] = [
-                $file => $this->filesystem->get($file),
-            ];
+            if ($stubName === 'Migration') {
+                $migration = $this->filesystem->glob($path.'*_create_'.$this->tableName.'_table.php');
+                $rewriteContent[] = [
+                    $migration[0] => $this->filesystem->get($migration[0]),
+                ];
+            } else {
+                $rewriteContent[] = [
+                    $file => $this->filesystem->get($file),
+                ];
+            }
         }
 
         return $rewriteContent;
+    }
+
+    protected function seeInConsoleOutput($searchStrings)
+    {
+        if (! is_array($searchStrings)) {
+            $searchStrings = [$searchStrings];
+        }
+
+        $output = Artisan::output();
+
+        foreach ($searchStrings as $searchString) {
+            $this->assertStringContainsString((string) $searchString, $output);
+        }
     }
 }

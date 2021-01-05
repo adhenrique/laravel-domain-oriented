@@ -12,8 +12,12 @@ class BuilderTest extends TestCase
     private Builder $builder;
     private Filesystem $filesystem;
     private array $filesPaths = [
-        'Controller' => 'Http/Controllers/',
-        'Resource' => 'Domain/%s/',
+        'Controller' => 'app/Http/Controllers/',
+        'Resource' => 'app/Domain/%s/',
+        'SearchEntity' => 'app/Domain/%s/',
+        'SearchService' => 'app/Domain/%s/',
+        'FilterService' => 'app/Domain/%s/',
+        'Migration' => 'database/migrations/',
     ];
 
     public function setUp(): void
@@ -104,7 +108,7 @@ class DummyController extends Controller
         $this->builder->setNames($domainName);
         $domainFolder = $this->builder->getDomainFolder();
 
-        $this->assertEquals(app_path('Domain/'.$this->builder->getDomainName()), $domainFolder);
+        $this->assertEquals(base_path('app/Domain/'.$this->builder->getDomainName()), $domainFolder);
     }
 
     /** @test **/
@@ -114,18 +118,18 @@ class DummyController extends Controller
         $this->builder->setNames($domainName);
         $this->builder->createDomainFolder();
 
-        $this->assertDirectoryExists(app_path('Domain/'.$this->builder->getDomainName()));
+        $this->assertDirectoryExists(base_path('app/Domain/'.$this->builder->getDomainName()));
     }
 
     /** @test **/
     public function it_should_create_a_controller_file()
     {
         $stubName = 'Controller';
-        $finalPath = 'Http/Controllers/';
+        $finalPath = 'app/Http/Controllers/';
         $this->builder->createFile($stubName, $finalPath);
         $fileName = $this->builder->getDomainName().'Controller.php';
 
-        $path = app_path($finalPath.$fileName);
+        $path = base_path($finalPath.$fileName);
 
         $this->assertFileExists($path);
     }
@@ -134,14 +138,39 @@ class DummyController extends Controller
     public function it_should_remove_controller_file()
     {
         $stubName = 'Controller';
-        $finalPath = 'Http/Controllers/';
+        $finalPath = 'app/Http/Controllers/';
         $this->builder->createFile($stubName, $finalPath);
         $this->builder->removeFile($stubName, $finalPath);
         $fileName = $this->builder->getDomainName().'Controller.php';
 
-        $path = app_path($finalPath.$fileName);
+        $path = base_path($finalPath.$fileName);
 
         $this->assertFileDoesNotExist($path);
+    }
+
+    /** @test **/
+    public function it_should_create_a_migration_file()
+    {
+        $stubName = 'Migration';
+        $finalPath = 'database/migrations/';
+        $this->builder->createFile($stubName, $finalPath);
+        $path = base_path(sprintf($finalPath, $this->builder->getDomainName()));
+        $migration = $this->filesystem->glob($path.'*_create_'.$this->builder->getNames()['tableName'].'_table.php');
+
+        $this->assertFileExists($migration[0]);
+    }
+
+    /** @test **/
+    public function it_should_remove_migration_file()
+    {
+        $stubName = 'Migration';
+        $finalPath = 'database/migrations/';
+        $this->builder->createFile($stubName, $finalPath);
+        $this->builder->removeFile($stubName, $finalPath);
+        $path = base_path(sprintf($finalPath, $this->builder->getDomainName()));
+        $migration = $this->filesystem->glob($path.'*_create_'.$this->builder->getNames()['tableName'].'_table.php');
+
+        $this->assertCount(0, $migration);
     }
 
     /** @test **/
@@ -165,10 +194,16 @@ class DummyController extends Controller
         $totalFiles = count($this->filesPaths);
         $createdFiles = 0;
         foreach ($this->filesPaths as $stubName => $finalPath) {
-            list($path, $fileName) = $this->builder->getPathAndFile($stubName, $finalPath);
+            $path = base_path(sprintf($finalPath, $this->builder->getDomainName()));
+            $fileName = $this->builder->getNames()['singularName'] . $stubName . '.php';
             $file = $path.$fileName;
+            $migration = [];
 
-            if ($this->filesystem->exists($file)) {
+            if ($stubName === 'Migration') {
+                $migration = $this->filesystem->glob($path.'*_create_'.$this->builder->getNames()['tableName'].'_table.php');
+            }
+
+            if ($this->filesystem->exists($file) || count($migration)) {
                 $createdFiles++;
             }
         }

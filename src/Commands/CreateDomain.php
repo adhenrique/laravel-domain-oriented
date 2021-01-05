@@ -18,15 +18,12 @@ class CreateDomain extends Command
         $this->builder->setNames($name);
         $this->builder->createDomainFolder();
 
-        $files = $this->builder->prepare();
 
         if ($force) {
             $this->builder->clear();
-            $this->builder->run();
-            return $this->finish();
         }
 
-        if (count($files)) {
+        if (count($files = $this->builder->prepare())) {
             $this->info($this->getTransMessage('exists'));
             $this->newLine();
 
@@ -35,14 +32,10 @@ class CreateDomain extends Command
             }
 
             $rewrite = $this->confirm($this->getTransMessage('rewrite_ask'));
-
             if (!$rewrite) {
                 return $this->exit();
             }
-
             $this->builder->clear();
-            $this->builder->run();
-            return $this->finish();
         }
 
         $this->builder->run();
