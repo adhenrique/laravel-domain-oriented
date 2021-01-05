@@ -14,7 +14,7 @@ class BuilderTest extends TestCase
     private array $filesPaths = [
         'Controller' => 'app/Http/Controllers/',
         'Resource' => 'app/Domain/%s/',
-        'SearchEntity' => 'app/Domain/%s/',
+        'SearchModel' => 'app/Domain/%s/',
         'SearchService' => 'app/Domain/%s/',
         'FilterService' => 'app/Domain/%s/',
         'Migration' => 'database/migrations/',

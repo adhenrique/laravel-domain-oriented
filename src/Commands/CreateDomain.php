@@ -9,7 +9,6 @@ class CreateDomain extends Command
                             {--f|force : Force re-create domain structure}';
     protected $description = 'Create a new domain structure.';
 
-    // fixme - Is there a better way to do these conditionals?
     public function handle(): int
     {
         $name = $this->getNameInput();

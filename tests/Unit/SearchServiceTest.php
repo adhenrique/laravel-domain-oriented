@@ -3,7 +3,7 @@
 namespace LaravelDomainOriented\Unit;
 
 use App\Domain\Test\TestFilterService;
-use App\Domain\Test\TestSearchEntity;
+use App\Domain\Test\TestSearchModel;
 use App\Domain\Test\TestSearchService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;

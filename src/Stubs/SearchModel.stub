@@ -5,7 +5,7 @@ namespace App\Domain\{{singularName}};
 use Illuminate\Database\Eloquent\SoftDeletes;
 use LaravelDomainOriented\Models\Model;
 
-class {{singularName}}SearchEntity extends Model
+class {{singularName}}SearchModel extends Model
 {
     protected $table = '{{tableName}}';
 

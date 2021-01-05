@@ -11,7 +11,7 @@ class {{singularName}}SearchService extends SearchService
     protected Model $model;
     protected FilterService $filterService;
 
-    public function __construct({{singularName}}SearchEntity $model, {{singularName}}FilterService $filterService)
+    public function __construct({{singularName}}SearchModel $model, {{singularName}}FilterService $filterService)
     {
         $this->model = $model;
         $this->filterService = $filterService;

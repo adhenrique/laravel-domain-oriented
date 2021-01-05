@@ -3,12 +3,9 @@
 namespace LaravelDomainOriented;
 
 use Carbon\Carbon;
-use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
-use ReflectionException;
-use ReflectionClass;
 
 class Builder
 {
@@ -16,7 +13,7 @@ class Builder
     private array $filesPaths = [
         'Controller' => 'app/Http/Controllers/',
         'Resource' => 'app/Domain/%s/',
-        'SearchEntity' => 'app/Domain/%s/',
+        'SearchModel' => 'app/Domain/%s/',
         'SearchService' => 'app/Domain/%s/',
         'FilterService' => 'app/Domain/%s/',
         'Migration' => 'database/migrations/',
