@@ -16,6 +16,7 @@ class ControllerTest extends DBTestCase
         $this->router = $this->app['router'];
         $this->router->get('tests', 'App\Http\Controllers\TestController@index');
         $this->router->get('tests/{id}', 'App\Http\Controllers\TestController@show');
+        $this->router->post('tests', 'App\Http\Controllers\TestController@show');
     }
 
     /** @test **/

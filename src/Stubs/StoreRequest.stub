@@ -1,0 +1,16 @@
+<?php
+
+namespace App\Domain\{{singularName}};
+
+use LaravelDomainOriented\Requests\StoreRequest;
+
+class {{singularName}}StoreRequest extends StoreRequest
+{
+    public function rules(): array
+    {
+        return [
+            'name' => 'required',
+            // todo - add rules here
+        ];
+    }
+}

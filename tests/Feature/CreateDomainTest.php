@@ -7,12 +7,12 @@ use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Str;
 use LaravelDomainOriented\Commands\CreateDomain;
-use LaravelDomainOriented\Tests\Cases\TestCase;
+use LaravelDomainOriented\Tests\Cases\BasicTestCase;
 use Symfony\Component\Console\Application as ConsoleApplication;
 use Illuminate\Foundation\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
-class CreateDomainTest extends TestCase
+class CreateDomainTest extends BasicTestCase
 {
     private CreateDomain $command;
     private Filesystem $filesystem;
@@ -24,6 +24,7 @@ class CreateDomainTest extends TestCase
         'SearchService' => 'app/Domain/%s/',
         'PersistenceService' => 'app/Domain/%s/',
         'FilterService' => 'app/Domain/%s/',
+        'StoreRequest' => 'app/Domain/%s/',
         'Migration' => 'database/migrations/',
     ];
     private string $domainName = 'Test';

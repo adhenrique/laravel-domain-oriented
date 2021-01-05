@@ -7,11 +7,11 @@ use Illuminate\Filesystem\Filesystem;
 use Illuminate\Foundation\Application;
 use LaravelDomainOriented\Builder;
 use LaravelDomainOriented\Commands\RemoveDomain;
-use LaravelDomainOriented\Tests\Cases\TestCase;
+use LaravelDomainOriented\Tests\Cases\BasicTestCase;
 use Symfony\Component\Console\Application as ConsoleApplication;
 use Symfony\Component\Console\Tester\CommandTester;
 
-class RemoveDomainTest extends TestCase
+class RemoveDomainTest extends BasicTestCase
 {
     private RemoveDomain $command;
     private Filesystem $filesystem;
@@ -24,6 +24,7 @@ class RemoveDomainTest extends TestCase
         'SearchService' => 'app/Domain/%s/',
         'PersistenceService' => 'app/Domain/%s/',
         'FilterService' => 'app/Domain/%s/',
+        'StoreRequest' => 'app/Domain/%s/',
         'Migration' => 'database/migrations/',
     ];
 

@@ -7,7 +7,6 @@ use App\Domain\{{singularName}}\{{singularName}}PersistenceService;
 use App\Domain\{{singularName}}\{{singularName}}Resource;
 use App\Domain\{{singularName}}\{{singularName}}SearchService;
 use LaravelDomainOriented\Controller\Controller;
-use LaravelDomainOriented\Resource\Resource;
 
 class {{singularName}}Controller extends Controller
 {

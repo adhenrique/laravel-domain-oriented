@@ -19,6 +19,7 @@ class BuilderTest extends BasicTestCase
         'SearchService' => 'app/Domain/%s/',
         'PersistenceService' => 'app/Domain/%s/',
         'FilterService' => 'app/Domain/%s/',
+        'StoreRequest' => 'app/Domain/%s/',
         'Migration' => 'database/migrations/',
     ];
 
