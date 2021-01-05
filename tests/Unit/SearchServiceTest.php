@@ -12,6 +12,19 @@ use LaravelDomainOriented\Tests\Cases\TestCase;
 
 class SearchServiceTest extends TestCase
 {
+    private array $data = [
+        ['name' => 'Test1'],
+        ['name' => 'Test2'],
+        ['name' => 'Test3'],
+        ['name' => 'Test4'],
+        ['name' => 'Test5'],
+        ['name' => 'Test6'],
+        ['name' => 'Test7'],
+        ['name' => 'Test8'],
+        ['name' => 'Test9'],
+        ['name' => 'Test10'],
+    ];
+
     public function setUp(): void
     {
         parent::setUp();
@@ -27,8 +40,8 @@ class SearchServiceTest extends TestCase
         $searchService = $this->app->make(TestSearchService::class);
         $data = $searchService->all($request);
 
-        $this->assertCount(1, $data);
-        $this->assertEquals('Test', $data[0]['name']);
+        $this->assertCount(count($this->data), $data);
+        $this->assertEquals('Test1', $data[0]['name']);
     }
 
     /** @test **/
@@ -48,12 +61,56 @@ class SearchServiceTest extends TestCase
         $this->assertCount(0, $data);
     }
 
+    /** @test **/
+    public function it_should_paginate_the_result()
+    {
+        $this->migrateAndInsert();
+
+        $request = new Request();
+        $request->merge([
+            'paginate' => [
+                'per_page' => 1,
+            ],
+        ]);
+        $searchService = $this->app->make(TestSearchService::class);
+        $data = $searchService->all($request);
+        $data = $data->toArray();
+
+        $this->assertCount(1, $data['data']);
+        $this->assertEquals(1, $data['per_page']);
+    }
+
+    /** @test **/
+    public function it_should_filter_and_paginate()
+    {
+        $this->migrateAndInsert();
+
+        $request = new Request();
+        $request->merge([
+            'filters' => [
+                'name' => [
+                    'operator' => 'like',
+                    'value' => '%Test1%',
+                ]
+            ],
+            'paginate' => [
+                'per_page' => 1,
+                'page' => 2,
+            ],
+        ]);
+        $searchService = $this->app->make(TestSearchService::class);
+        $data = $searchService->all($request);
+        $data = $data->toArray();
+
+        $this->assertCount(1, $data['data']);
+        $this->assertEquals(2, $data['total']);
+        $this->assertEquals(2, $data['current_page']);
+        $this->assertEquals('Test10', $data['data'][0]['name']);
+    }
+
     private function migrateAndInsert()
     {
         $this->artisan('migrate', ['--database' => 'testing'])->run();
-
-        DB::table('tests')->insert([
-            'name' => 'Test',
-        ]);
+        DB::table('tests')->insert($this->data);
     }
 }
