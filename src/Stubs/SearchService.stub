@@ -3,12 +3,12 @@
 namespace App\Domain\{{singularName}};
 
 use LaravelDomainOriented\Services\SearchService;
-use LaravelDomainOriented\Models\Model;
+use LaravelDomainOriented\Models\SearchModel;
 use LaravelDomainOriented\Services\FilterService;
 
 class {{singularName}}SearchService extends SearchService
 {
-    protected Model $model;
+    protected SearchModel $model;
     protected FilterService $filterService;
 
     public function __construct({{singularName}}SearchModel $model, {{singularName}}FilterService $filterService)

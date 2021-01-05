@@ -2,9 +2,10 @@
 
 namespace LaravelDomainOriented\Models;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Model extends \Illuminate\Database\Eloquent\Model
+class PersistenceModel extends Model
 {
     use SoftDeletes;
 }

@@ -3,15 +3,15 @@
 namespace LaravelDomainOriented\Services;
 
 use Illuminate\Http\Request;
-use LaravelDomainOriented\Models\Model;
+use LaravelDomainOriented\Models\SearchModel;
 
 class SearchService
 {
-    protected Model $model;
+    protected SearchModel $model;
     protected FilterService $filterService;
     protected int $perPage = 15;
 
-    public function __construct(Model $model, FilterService $filterService)
+    public function __construct(SearchModel $model, FilterService $filterService)
     {
         $this->model = $model;
         $this->filterService = $filterService;

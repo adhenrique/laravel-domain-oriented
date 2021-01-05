@@ -1,6 +1,6 @@
 <?php
 
-namespace LaravelDomainOriented\Unit;
+namespace Tests\Unit;
 
 use App\Domain\Test\TestSearchService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -36,7 +36,7 @@ class SearchServiceTest extends TestCase
     }
 
     /** @test **/
-    public function it_should_insert_a_item_and_get_same_from_search_service()
+    public function it_should_assert_a_item_from_search_service()
     {
         $request = new Request();
         $searchService = $this->app->make(TestSearchService::class);
@@ -47,7 +47,7 @@ class SearchServiceTest extends TestCase
     }
 
     /** @test **/
-    public function it_should_insert_a_item_and_get_nothing_from_search_service_with_filters()
+    public function it_should_get_nothing_from_search_service_with_filters()
     {
         $request = new Request();
         $request->merge([

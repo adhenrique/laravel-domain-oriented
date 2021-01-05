@@ -2,11 +2,16 @@
 
 namespace App\Domain\{{singularName}};
 
-use LaravelDomainOriented\Models\SearchModel;
+use LaravelDomainOriented\Models\PersistenceModel;
 
-class {{singularName}}SearchModel extends SearchModel
+class {{singularName}}PersistenceModel extends PersistenceModel
 {
     protected $table = '{{tableName}}';
+
+    protected $fillable = [
+        'id',
+        'name',
+    ];
 
     // SCOPES
     public function scopeDefault($query)

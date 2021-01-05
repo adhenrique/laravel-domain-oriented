@@ -20,7 +20,9 @@ class CreateDomainTest extends TestCase
         'Controller' => 'app/Http/Controllers/',
         'Resource' => 'app/Domain/%s/',
         'SearchModel' => 'app/Domain/%s/',
+        'PersistenceModel' => 'app/Domain/%s/',
         'SearchService' => 'app/Domain/%s/',
+        'PersistenceService' => 'app/Domain/%s/',
         'FilterService' => 'app/Domain/%s/',
         'Migration' => 'database/migrations/',
     ];
