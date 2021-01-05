@@ -15,6 +15,7 @@ class ControllerTest extends DBTestCase
 
         $this->router = $this->app['router'];
         $this->router->get('tests', 'App\Http\Controllers\TestController@index');
+        $this->router->get('tests/{id}', 'App\Http\Controllers\TestController@show');
     }
 
     /** @test **/
@@ -26,5 +27,23 @@ class ControllerTest extends DBTestCase
         $data = json_decode($response->getContent(), true);
 
         $this->assertCount(count($this->data), $data['data']);
+    }
+
+    /** @test **/
+    public function it_should_call_find_route_and_assert_item()
+    {
+        $response = $this->getJson('tests/1');
+        $response->assertOk();
+
+        $data = json_decode($response->getContent(), true);
+
+        $this->assertEquals($this->data[0]['name'], $data['data']['name']);
+    }
+
+    /** @test **/
+    public function it_should_call_find_route_with_non_existent_id_and_assert_status_404()
+    {
+        $response = $this->getJson('tests/15');
+        $response->assertStatus(404);
     }
 }

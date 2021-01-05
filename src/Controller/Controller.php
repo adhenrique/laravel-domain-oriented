@@ -23,4 +23,10 @@ class Controller extends BaseController
         $data = $this->searchService->all($request);
         return $this->resource::collection($data);
     }
+
+    public function show($id)
+    {
+        $data = $this->searchService->findById($id);
+        return new $this->resource($data);
+    }
 }
