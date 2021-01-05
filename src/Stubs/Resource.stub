@@ -2,11 +2,11 @@
 
 namespace App\Domain\{{singularName}};
 
-use Illuminate\Http\Resources\Json\JsonResource;
+use LaravelDomainOriented\Resource\Resource;
 
-class {{singularName}}Resource extends JsonResource
+class {{singularName}}Resource extends Resource
 {
-    public function toArray($request)
+    public function data(): array
     {
         $data = [
             'id' => $this->id,

@@ -5,9 +5,9 @@ namespace Tests\Unit;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Enumerable;
 use LaravelDomainOriented\Builder;
-use LaravelDomainOriented\Tests\Cases\TestCase;
+use LaravelDomainOriented\Tests\Cases\BasicTestCase;
 
-class BuilderTest extends TestCase
+class BuilderTest extends BasicTestCase
 {
     private Builder $builder;
     private Filesystem $filesystem;

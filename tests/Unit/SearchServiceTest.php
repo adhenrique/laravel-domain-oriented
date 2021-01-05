@@ -5,36 +5,10 @@ namespace Tests\Unit;
 use App\Domain\Test\TestSearchService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use LaravelDomainOriented\Tests\Cases\TestCase;
+use LaravelDomainOriented\Tests\Cases\DBTestCase;
 
-class SearchServiceTest extends TestCase
+class SearchServiceTest extends DBTestCase
 {
-    private array $data = [
-        ['name' => 'Test1'],
-        ['name' => 'Test2'],
-        ['name' => 'Test3'],
-        ['name' => 'Test4'],
-        ['name' => 'Test5'],
-        ['name' => 'Test6'],
-        ['name' => 'Test7'],
-        ['name' => 'Test8'],
-        ['name' => 'Test9'],
-        ['name' => 'Test10'],
-    ];
-    protected static bool $initialized = false;
-
-    public function setUp(): void
-    {
-        parent::setUp();
-        if (!self::$initialized) {
-            $this->artisan('domain:create Test --force');
-
-            self::$initialized = true;
-        }
-        $this->migrateAndInsert();
-    }
-
     /** @test **/
     public function it_should_assert_a_item_from_search_service()
     {
@@ -120,11 +94,5 @@ class SearchServiceTest extends TestCase
         $this->expectException(ModelNotFoundException::class);
 
         $searchService->findById(15);
-    }
-
-    private function migrateAndInsert()
-    {
-        $this->artisan('migrate', ['--database' => 'testing'])->run();
-        DB::table('tests')->insert($this->data);
     }
 }

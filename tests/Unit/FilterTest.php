@@ -4,11 +4,11 @@ namespace Tests\Unit;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
-use LaravelDomainOriented\Models\Model;
+use LaravelDomainOriented\Models\SearchModel;
 use LaravelDomainOriented\Services\FilterService;
-use LaravelDomainOriented\Tests\Cases\TestCase;
+use LaravelDomainOriented\Tests\Cases\BasicTestCase;
 
-class FilterTest extends TestCase
+class FilterTest extends BasicTestCase
 {
     private Request $request;
 
@@ -61,7 +61,7 @@ class FilterTest extends TestCase
     }
 }
 
-class MyEloquentModel extends Model
+class MyEloquentModel extends SearchModel
 {
     //
 }

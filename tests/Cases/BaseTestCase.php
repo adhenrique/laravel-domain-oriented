@@ -3,14 +3,10 @@
 namespace LaravelDomainOriented\Tests\Cases;
 
 use LaravelDomainOriented\ServiceProvider;
+use Orchestra\Testbench\TestCase;
 
-abstract class TestCase extends \Orchestra\Testbench\TestCase
+abstract class BaseTestCase extends TestCase
 {
-    public function setUp(): void {
-        parent::setUp();
-        // additional setup
-    }
-
     protected function getPackageProviders($app): array
     {
         return [

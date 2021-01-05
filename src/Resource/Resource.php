@@ -4,11 +4,9 @@ namespace LaravelDomainOriented\Resource;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class Resource extends JsonResource
+abstract class Resource extends JsonResource
 {
-    protected function data(): array {
-        return [];
-    }
+    protected abstract function data(): array;
 
     protected function defaultData(): array
     {

@@ -2,13 +2,29 @@
 
 namespace Tests\Feature;
 
-use LaravelDomainOriented\Tests\Cases\TestCase;
+use Illuminate\Routing\Router;
+use LaravelDomainOriented\Tests\Cases\DBTestCase;
 
-class ControllerTest extends TestCase
+class ControllerTest extends DBTestCase
 {
-    /** @test **/
-    public function shouldGetAOkStatusResponseAndEmptyBody()
+    protected Router $router;
+
+    public function setUp(): void
     {
-        $this->assertTrue(true);
+        parent::setUp();
+
+        $this->router = $this->app['router'];
+        $this->router->get('tests', 'App\Http\Controllers\TestController@index');
+    }
+
+    /** @test **/
+    public function it_should_call_list_route_and_assert_count_of_items()
+    {
+        $response = $this->getJson('tests');
+        $response->assertOk();
+
+        $data = json_decode($response->getContent(), true);
+
+        $this->assertCount(count($this->data), $data['data']);
     }
 }

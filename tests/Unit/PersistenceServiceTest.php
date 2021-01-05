@@ -5,22 +5,11 @@ namespace Tests\Unit;
 use App\Domain\Test\TestPersistenceService;
 use App\Domain\Test\TestSearchService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use LaravelDomainOriented\Tests\Cases\TestCase;
+use LaravelDomainOriented\Tests\Cases\DBTestCase;
 
-class PersistenceServiceTest extends TestCase
+class PersistenceServiceTest extends DBTestCase
 {
-    protected static bool $initialized = false;
-
-    public function setUp(): void
-    {
-        parent::setUp();
-        if (!self::$initialized) {
-            $this->artisan('domain:create Test --force');
-
-            self::$initialized = true;
-        }
-        $this->migrate();
-    }
+    protected bool $insertItems = false;
 
     /** @test **/
     public function it_should_store_a_item_and_search_same()
@@ -78,10 +67,5 @@ class PersistenceServiceTest extends TestCase
         $persistenceService->update([
             'name' => $updateName,
         ], 2);
-    }
-
-    private function migrate()
-    {
-        $this->artisan('migrate', ['--database' => 'testing'])->run();
     }
 }

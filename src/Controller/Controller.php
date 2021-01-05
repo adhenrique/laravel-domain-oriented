@@ -1,20 +1,26 @@
 <?php
 
-
 namespace LaravelDomainOriented\Controller;
 
-
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Routing\Controller as BaseController;
+use LaravelDomainOriented\Services\SearchService;
 
-class Controller extends \Illuminate\Routing\Controller
+class Controller extends BaseController
 {
+    protected SearchService $searchService;
+
+    protected $resource;
+
     public function response(array $data = [], $status = 200): JsonResponse
     {
         return response()->json(['data' => $data], $status);
     }
 
-    public function index(): JsonResponse
+    public function index(Request $request)
     {
-        return $this->response([]);
+        $data = $this->searchService->all($request);
+        return $this->resource::collection($data);
     }
 }
