@@ -31,4 +31,9 @@ class SearchService
         }
         return $builder->get();
     }
+
+    public function findById(int $id)
+    {
+        return $this->model->findOrFail($id);
+    }
 }

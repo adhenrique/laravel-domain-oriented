@@ -2,12 +2,10 @@
 
 namespace LaravelDomainOriented\Unit;
 
-use App\Domain\Test\TestFilterService;
-use App\Domain\Test\TestSearchModel;
 use App\Domain\Test\TestSearchService;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use LaravelDomainOriented\Services\FilterService;
 use LaravelDomainOriented\Tests\Cases\TestCase;
 
 class SearchServiceTest extends TestCase
@@ -24,18 +22,22 @@ class SearchServiceTest extends TestCase
         ['name' => 'Test9'],
         ['name' => 'Test10'],
     ];
+    protected static bool $initialized = false;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->artisan('domain:create Test --force');
+        if (!self::$initialized) {
+            $this->artisan('domain:create Test --force');
+
+            self::$initialized = true;
+        }
+        $this->migrateAndInsert();
     }
 
     /** @test **/
     public function it_should_insert_a_item_and_get_same_from_search_service()
     {
-        $this->migrateAndInsert();
-
         $request = new Request();
         $searchService = $this->app->make(TestSearchService::class);
         $data = $searchService->all($request);
@@ -47,8 +49,6 @@ class SearchServiceTest extends TestCase
     /** @test **/
     public function it_should_insert_a_item_and_get_nothing_from_search_service_with_filters()
     {
-        $this->migrateAndInsert();
-
         $request = new Request();
         $request->merge([
             'filters' => [
@@ -64,8 +64,6 @@ class SearchServiceTest extends TestCase
     /** @test **/
     public function it_should_paginate_the_result()
     {
-        $this->migrateAndInsert();
-
         $request = new Request();
         $request->merge([
             'paginate' => [
@@ -83,8 +81,6 @@ class SearchServiceTest extends TestCase
     /** @test **/
     public function it_should_filter_and_paginate()
     {
-        $this->migrateAndInsert();
-
         $request = new Request();
         $request->merge([
             'filters' => [
@@ -106,6 +102,24 @@ class SearchServiceTest extends TestCase
         $this->assertEquals(2, $data['total']);
         $this->assertEquals(2, $data['current_page']);
         $this->assertEquals('Test10', $data['data'][0]['name']);
+    }
+
+    /** @test **/
+    public function it_should_find_by_id()
+    {
+        $searchService = $this->app->make(TestSearchService::class);
+        $data = $searchService->findById(1);
+
+        $this->assertEquals('Test1', $data['name']);
+    }
+
+    /** @test **/
+    public function it_should_throw_model_not_found_exception()
+    {
+        $searchService = $this->app->make(TestSearchService::class);
+        $this->expectException(ModelNotFoundException::class);
+
+        $searchService->findById(15);
     }
 
     private function migrateAndInsert()
