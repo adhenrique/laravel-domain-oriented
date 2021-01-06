@@ -39,7 +39,7 @@ class Controller extends BaseController
 
     public function store(Request $request): JsonResponse
     {
-        $data = $this->validateService::handle($request->all());
+        $data = $this->validateService->handle($request->all());
         $id = $this->persistenceService->store($data);
         return $this->response(['id' => $id]);
     }
@@ -47,7 +47,7 @@ class Controller extends BaseController
     // todo - validate $id parameter
     public function update(Request $request, $id): JsonResponse
     {
-        $data = $this->validateService::handle($request->all());
+        $data = $this->validateService->handle($request->all());
         $isUpdated = $this->persistenceService->update($data, $id);
         return $this->response(['isUpdated' => $isUpdated]);
     }
