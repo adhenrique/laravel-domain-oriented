@@ -30,32 +30,37 @@ class Controller extends BaseController
         return $this->resource::collection($data);
     }
 
-    // todo - validate $id parameter
-    public function show(int $id)
+    public function show(Request $request, int $id)
     {
-        $data = $this->searchService->findById($id);
+        $request = $request->merge(['id' => $id]);
+        $validatedData = $this->validateService->handle($request->all(), ValidateService::SHOW);
+
+        $data = $this->searchService->findById($validatedData['id']);
         return new $this->resource($data);
     }
 
     public function store(Request $request): JsonResponse
     {
-        $data = $this->validateService->handle($request->all());
-        $id = $this->persistenceService->store($data);
+        $validatedData = $this->validateService->handle($request->all(), ValidateService::STORE);
+        $id = $this->persistenceService->store($validatedData);
         return $this->response(['id' => $id]);
     }
 
-    // todo - validate $id parameter
     public function update(Request $request, $id): JsonResponse
     {
-        $data = $this->validateService->handle($request->all());
-        $isUpdated = $this->persistenceService->update($data, $id);
+        $request = $request->merge(['id' => $id]);
+        $validatedData = $this->validateService->handle($request->all(), ValidateService::UPDATE);
+
+        $isUpdated = $this->persistenceService->update($validatedData, $id);
         return $this->response(['isUpdated' => $isUpdated]);
     }
 
-    // todo - validate $id parameter
-    public function destroy(int $id): JsonResponse
+    public function destroy(Request $request, int $id): JsonResponse
     {
-        $isDeleted = $this->persistenceService->destroy($id);
+        $request = $request->merge(['id' => $id]);
+        $validatedData = $this->validateService->handle($request->all(), ValidateService::DESTROY);
+
+        $isDeleted = $this->persistenceService->destroy($validatedData['id']);
         return $this->response(['isDeleted' => $isDeleted]);
     }
 }

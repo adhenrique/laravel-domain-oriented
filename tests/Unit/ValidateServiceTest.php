@@ -55,7 +55,19 @@ class ValidateServiceTest extends BasicTestCase
 
         $this->expectException(ValidationException::class);
 
-        $data = $this->validator->handle($data);
+        $this->validator->handle($data);
+    }
+
+    /** @test **/
+    public function it_should_validate_specific_action()
+    {
+        $data = [
+            'id' => 1,
+            'name' => 'asd',
+        ];
+
+        $validated = $this->validator->handle($data, MyCustomValidateService::UPDATE);
+        $this->assertEquals($data, $validated);
     }
 }
 
@@ -64,5 +76,10 @@ class MyCustomValidateService extends ValidateService
     protected array $rules = [
         'name' => 'required|string',
         'phone' => 'integer',
+        self::UPDATE => [
+            'id' => 'required|integer',
+            'name' => 'string',
+            'etc' => 'number',
+        ],
     ];
 }
