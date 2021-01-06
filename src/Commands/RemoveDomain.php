@@ -14,6 +14,14 @@ class RemoveDomain extends Command
         $name = $this->getNameInput();
         $this->builder->setNames($name);
 
+        $files = $this->builder->prepare();
+
+        if (!count($files)) {
+            $this->newLine();
+            $this->warn($this->getTransMessage('not_exists', ['domain' => $name]));
+            return $this->exit();
+        }
+
         $remove = $this->confirm($this->getTransMessage('remove_ask', ['domain' => $name]));
 
         if (!$remove) {
@@ -22,6 +30,6 @@ class RemoveDomain extends Command
 
         $this->builder->clear();
 
-        return $this->finish();
+        return $this->finish('removed');
     }
 }

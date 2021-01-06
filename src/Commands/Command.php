@@ -28,10 +28,10 @@ class Command extends \Illuminate\Console\Command
         return -1;
     }
 
-    protected function finish(): int
+    protected function finish(string $slug = 'finish'): int
     {
         $this->newLine();
-        $this->line($this->getTransMessage('finish'));
+        $this->line($this->getTransMessage($slug));
         $this->newLine();
         return 0;
     }

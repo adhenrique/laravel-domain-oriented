@@ -38,6 +38,6 @@ class CreateDomain extends Command
         }
 
         $this->builder->run();
-        return $this->finish();
+        return $this->finish('created');
     }
 }

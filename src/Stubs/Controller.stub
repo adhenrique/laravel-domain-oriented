@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Domain\{{singularName}}\{{singularName}}DataService;
 use App\Domain\{{singularName}}\{{singularName}}PersistenceService;
 use App\Domain\{{singularName}}\{{singularName}}Resource;
 use App\Domain\{{singularName}}\{{singularName}}SearchService;
