@@ -24,8 +24,7 @@ class RemoveDomainTest extends BasicTestCase
         'SearchService' => 'app/Domain/%s/',
         'PersistenceService' => 'app/Domain/%s/',
         'FilterService' => 'app/Domain/%s/',
-        'StoreRequest' => 'app/Domain/%s/',
-        'UpdateRequest' => 'app/Domain/%s/',
+        'ValidateService' => 'app/Domain/%s/',
         'Migration' => 'database/migrations/',
     ];
 

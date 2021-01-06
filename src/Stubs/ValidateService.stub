@@ -1,0 +1,12 @@
+<?php
+
+namespace App\Domain\{{singularName}};
+
+use LaravelDomainOriented\Services\ValidateService;
+
+class {{singularName}}ValidateService extends ValidateService
+{
+    protected static array $rules = [
+        'name' => 'required|string',
+    ];
+}

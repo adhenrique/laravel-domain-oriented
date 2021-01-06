@@ -18,6 +18,7 @@ class ControllerTest extends DBTestCase
         $this->router->get('tests/{id}', 'App\Http\Controllers\TestController@show');
         $this->router->post('tests', 'App\Http\Controllers\TestController@store');
         $this->router->put('tests/{id}', 'App\Http\Controllers\TestController@update');
+        $this->router->delete('tests/{id}', 'App\Http\Controllers\TestController@destroy');
     }
 
     /** @test **/
@@ -92,5 +93,18 @@ class ControllerTest extends DBTestCase
             'name' => 1
         ]);
         $response->assertStatus(422);
+    }
+
+    /** @test **/
+    public function it_should_delete_a_item()
+    {
+        $this->withoutMiddleware();
+        $response = $this->deleteJson('tests/1');
+        $response->assertOk();
+
+        $data = json_decode($response->getContent(), true);
+
+        $this->assertTrue($data['data']['isDeleted']);
+        $this->assertSoftDeleted('tests');
     }
 }

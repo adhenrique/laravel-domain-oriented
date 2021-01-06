@@ -5,10 +5,9 @@ namespace LaravelDomainOriented\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
-use LaravelDomainOriented\Requests\StoreRequest;
-use LaravelDomainOriented\Requests\UpdateRequest;
 use LaravelDomainOriented\Services\PersistenceService;
 use LaravelDomainOriented\Services\SearchService;
+use LaravelDomainOriented\Services\ValidateService;
 
 class Controller extends BaseController
 {
@@ -16,9 +15,7 @@ class Controller extends BaseController
 
     protected PersistenceService $persistenceService;
 
-    protected StoreRequest $storeRequest;
-
-    protected Request $updateRequest;
+    protected ValidateService $validateService;
 
     protected $resource;
 
@@ -33,23 +30,32 @@ class Controller extends BaseController
         return $this->resource::collection($data);
     }
 
-    public function show($id)
+    // todo - validate $id parameter
+    public function show(int $id)
     {
         $data = $this->searchService->findById($id);
         return new $this->resource($data);
     }
 
-    public function store(StoreRequest $request): JsonResponse
+    public function store(Request $request): JsonResponse
     {
-        $data = $request->validated();
+        $data = $this->validateService::handle($request->all());
         $id = $this->persistenceService->store($data);
         return $this->response(['id' => $id]);
     }
 
-    public function update(UpdateRequest $request, $id): JsonResponse
+    // todo - validate $id parameter
+    public function update(Request $request, $id): JsonResponse
     {
-        $data = $request->validated();
+        $data = $this->validateService::handle($request->all());
         $isUpdated = $this->persistenceService->update($data, $id);
         return $this->response(['isUpdated' => $isUpdated]);
+    }
+
+    // todo - validate $id parameter
+    public function destroy(int $id): JsonResponse
+    {
+        $isDeleted = $this->persistenceService->destroy($id);
+        return $this->response(['isDeleted' => $isDeleted]);
     }
 }

@@ -6,8 +6,7 @@ use App\Domain\{{singularName}}\{{singularName}}DataService;
 use App\Domain\{{singularName}}\{{singularName}}PersistenceService;
 use App\Domain\{{singularName}}\{{singularName}}Resource;
 use App\Domain\{{singularName}}\{{singularName}}SearchService;
-use App\Domain\{{singularName}}\{{singularName}}StoreRequest;
-use App\Domain\{{singularName}}\{{singularName}}UpdateRequest;
+use App\Domain\{{singularName}}\{{singularName}}ValidateService;
 use LaravelDomainOriented\Controller\Controller;
 
 class {{singularName}}Controller extends Controller
@@ -17,12 +16,10 @@ class {{singularName}}Controller extends Controller
     public function __construct(
         {{singularName}}PersistenceService $persistenceService,
         {{singularName}}SearchService $searchService,
-        {{singularName}}StoreRequest $storeRequest,
-        {{singularName}}UpdateRequest $updateRequest
+        {{singularName}}ValidateService $validateService
     ) {
         $this->persistenceService = $persistenceService;
         $this->searchService = $searchService;
-        $this->storeRequest = $storeRequest;
-        $this->updateRequest = $updateRequest;
+        $this->validateService = $validateService;
     }
 }

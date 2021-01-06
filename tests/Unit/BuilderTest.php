@@ -19,8 +19,7 @@ class BuilderTest extends BasicTestCase
         'SearchService' => 'app/Domain/%s/',
         'PersistenceService' => 'app/Domain/%s/',
         'FilterService' => 'app/Domain/%s/',
-        'StoreRequest' => 'app/Domain/%s/',
-        'UpdateRequest' => 'app/Domain/%s/',
+        'ValidateService' => 'app/Domain/%s/',
         'Migration' => 'database/migrations/',
     ];
 
@@ -88,6 +87,7 @@ use App\Domain\Dummy\DummyDataService;
 use App\Domain\Dummy\DummyPersistenceService;
 use App\Domain\Dummy\DummyResource;
 use App\Domain\Dummy\DummySearchService;
+use App\Domain\Dummy\DummyValidateService;
 use LaravelDomainOriented\Controller\Controller;
 
 class DummyController extends Controller
@@ -97,13 +97,11 @@ class DummyController extends Controller
     public function __construct(
         DummyPersistenceService $persistenceService,
         DummySearchService $searchService,
-        DummyStoreRequest $storeRequest,
-        DummyUpdateRequest $updateRequest,
+        DummyValidateService $validateService
     ) {
         $this->persistenceService = $persistenceService;
         $this->searchService = $searchService;
-        $this->storeRequest = $storeRequest;
-        $this->updateRequest = $updateRequest;
+        $this->validateService = $validateService;
     }
 }
 ', $content);

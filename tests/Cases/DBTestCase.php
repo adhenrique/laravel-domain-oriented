@@ -20,12 +20,13 @@ abstract class DBTestCase extends BaseTestCase
     ];
     protected static bool $initialized = false;
     protected bool $insertItems = true;
+    protected string $domainName = 'Test';
 
     public function setUp(): void
     {
         parent::setUp();
         if (!self::$initialized) {
-            $this->artisan('domain:create Test --force');
+            $this->artisan('domain:create ' . $this->domainName . ' --force');
 
             self::$initialized = true;
         }

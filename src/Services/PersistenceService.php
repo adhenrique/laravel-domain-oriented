@@ -27,7 +27,14 @@ class PersistenceService
             $model->{$field} = $value;
         }
 
-        $updatedModel = $model->save();
-        return $updatedModel;
+        return $model->save();
+    }
+
+    public function destroy(int $id): bool
+    {
+        $model = $this->model->findOrFail($id);
+
+        $model->delete();
+        return true;
     }
 }

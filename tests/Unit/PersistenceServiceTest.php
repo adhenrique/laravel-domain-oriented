@@ -29,7 +29,7 @@ class PersistenceServiceTest extends DBTestCase
     }
 
     /** @test **/
-    public function it_should_updated_a_item_and_compare_difference()
+    public function it_should_update_a_item_and_compare_difference()
     {
         $persistenceService = $this->app->make(TestPersistenceService::class);
         $searchService = $this->app->make(TestSearchService::class);
@@ -67,5 +67,20 @@ class PersistenceServiceTest extends DBTestCase
         $persistenceService->update([
             'name' => $updateName,
         ], 2);
+    }
+
+    /** @test **/
+    public function it_should_delete_item_and_throw_when_search_it()
+    {
+        $persistenceService = $this->app->make(TestPersistenceService::class);
+        $searchService = $this->app->make(TestSearchService::class);
+        $id = 1;
+
+        $this->expectException(ModelNotFoundException::class);
+
+        $isDeleted = $persistenceService->destroy($id);
+        $searchService->findById(1);
+
+        $this->assertTrue($isDeleted);
     }
 }
