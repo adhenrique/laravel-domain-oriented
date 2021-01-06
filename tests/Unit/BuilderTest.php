@@ -20,6 +20,7 @@ class BuilderTest extends BasicTestCase
         'PersistenceService' => 'app/Domain/%s/',
         'FilterService' => 'app/Domain/%s/',
         'StoreRequest' => 'app/Domain/%s/',
+        'UpdateRequest' => 'app/Domain/%s/',
         'Migration' => 'database/migrations/',
     ];
 
@@ -95,10 +96,14 @@ class DummyController extends Controller
 
     public function __construct(
         DummyPersistenceService $persistenceService,
-        DummySearchService $searchService
+        DummySearchService $searchService,
+        DummyStoreRequest $storeRequest,
+        DummyUpdateRequest $updateRequest,
     ) {
         $this->persistenceService = $persistenceService;
         $this->searchService = $searchService;
+        $this->storeRequest = $storeRequest;
+        $this->updateRequest = $updateRequest;
     }
 }
 ', $content);

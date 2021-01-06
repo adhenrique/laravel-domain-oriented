@@ -19,6 +19,7 @@ class Builder
         'PersistenceService' => 'app/Domain/%s/',
         'FilterService' => 'app/Domain/%s/',
         'StoreRequest' => 'app/Domain/%s/',
+        'UpdateRequest' => 'app/Domain/%s/',
         'Migration' => 'database/migrations/',
     ];
     private Collection $names;
