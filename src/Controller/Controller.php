@@ -6,6 +6,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use LaravelDomainOriented\Requests\StoreRequest;
+use LaravelDomainOriented\Requests\UpdateRequest;
 use LaravelDomainOriented\Services\PersistenceService;
 use LaravelDomainOriented\Services\SearchService;
 
@@ -16,6 +17,8 @@ class Controller extends BaseController
     protected PersistenceService $persistenceService;
 
     protected StoreRequest $storeRequest;
+
+    protected Request $updateRequest;
 
     protected $resource;
 
@@ -41,5 +44,12 @@ class Controller extends BaseController
         $data = $request->validated();
         $id = $this->persistenceService->store($data);
         return $this->response(['id' => $id]);
+    }
+
+    public function update(UpdateRequest $request, $id): JsonResponse
+    {
+        $data = $request->validated();
+        $isUpdated = $this->persistenceService->update($data, $id);
+        return $this->response(['isUpdated' => $isUpdated]);
     }
 }

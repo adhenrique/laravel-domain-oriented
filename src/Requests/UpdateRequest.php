@@ -2,9 +2,9 @@
 
 namespace LaravelDomainOriented\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Foundation\Http\FormRequest as BaseFormRequest;
 
-class UpdateRequest extends FormRequest
+class UpdateRequest extends BaseFormRequest
 {
     public function rules(): array
     {

@@ -6,6 +6,8 @@ use App\Domain\{{singularName}}\{{singularName}}DataService;
 use App\Domain\{{singularName}}\{{singularName}}PersistenceService;
 use App\Domain\{{singularName}}\{{singularName}}Resource;
 use App\Domain\{{singularName}}\{{singularName}}SearchService;
+use App\Domain\{{singularName}}\{{singularName}}StoreRequest;
+use App\Domain\{{singularName}}\{{singularName}}UpdateRequest;
 use LaravelDomainOriented\Controller\Controller;
 
 class {{singularName}}Controller extends Controller
@@ -16,7 +18,7 @@ class {{singularName}}Controller extends Controller
         {{singularName}}PersistenceService $persistenceService,
         {{singularName}}SearchService $searchService,
         {{singularName}}StoreRequest $storeRequest,
-        {{singularName}}UpdateRequest $updateRequest,
+        {{singularName}}UpdateRequest $updateRequest
     ) {
         $this->persistenceService = $persistenceService;
         $this->searchService = $searchService;

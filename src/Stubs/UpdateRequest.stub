@@ -2,9 +2,9 @@
 
 namespace App\Domain\{{singularName}};
 
-use LaravelDomainOriented\Requests\StoreRequest;
+use LaravelDomainOriented\Requests\UpdateRequest;
 
-class {{singularName}}StoreRequest extends StoreRequest
+class {{singularName}}UpdateRequest extends UpdateRequest
 {
     public function rules(): array
     {
