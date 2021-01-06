@@ -16,7 +16,7 @@ class ControllerTest extends DBTestCase
         $this->router = $this->app['router'];
         $this->router->get('tests', 'App\Http\Controllers\TestController@index');
         $this->router->get('tests/{id}', 'App\Http\Controllers\TestController@show');
-        $this->router->post('tests', 'App\Http\Controllers\TestController@show');
+        $this->router->post('tests', 'App\Http\Controllers\TestController@store');
     }
 
     /** @test **/
@@ -46,5 +46,27 @@ class ControllerTest extends DBTestCase
     {
         $response = $this->getJson('tests/15');
         $response->assertStatus(404);
+    }
+
+    /** @test **/
+    public function it_should_create_a_item()
+    {
+        $response = $this->postJson('tests', [
+            'name' => 'XXX'
+        ]);
+        $response->assertOk();
+
+        $data = json_decode($response->getContent(), true);
+
+        $this->assertEquals(11, $data['data']['id']);
+    }
+
+    /** @test **/
+    public function it_should_try_create_a_item_and_assert_status_422()
+    {
+        $response = $this->postJson('tests', [
+            'name' => 1
+        ]);
+        $response->assertStatus(422);
     }
 }

@@ -5,11 +5,17 @@ namespace LaravelDomainOriented\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
+use LaravelDomainOriented\Requests\StoreRequest;
+use LaravelDomainOriented\Services\PersistenceService;
 use LaravelDomainOriented\Services\SearchService;
 
 class Controller extends BaseController
 {
     protected SearchService $searchService;
+
+    protected PersistenceService $persistenceService;
+
+    protected StoreRequest $storeRequest;
 
     protected $resource;
 
@@ -28,5 +34,12 @@ class Controller extends BaseController
     {
         $data = $this->searchService->findById($id);
         return new $this->resource($data);
+    }
+
+    public function store(StoreRequest $request): JsonResponse
+    {
+        $data = $request->validated();
+        $id = $this->persistenceService->store($data);
+        return $this->response(['id' => $id]);
     }
 }

@@ -9,7 +9,7 @@ class {{singularName}}StoreRequest extends StoreRequest
     public function rules(): array
     {
         return [
-            'name' => 'required',
+            'name' => 'required|string',
             // todo - add rules here
         ];
     }

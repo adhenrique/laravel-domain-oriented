@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class PersistenceModel extends Model
 {
     use SoftDeletes;
+
+    protected $fillable = [
+        'name',
+        // todo - add fields here
+    ];
 }
