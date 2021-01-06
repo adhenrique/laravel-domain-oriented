@@ -21,6 +21,7 @@ class Create{{pluralName}}Table extends Migration
 
             //default columns
             $table->timestamps();
+            $table->timestamp('inactivated_at')->nullable();
             $table->softDeletes();
         });
     }
