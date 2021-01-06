@@ -1,0 +1,15 @@
+<?php
+
+use Database\Seeder;
+
+use Illuminate\Database\Seeder as BaseSeeder;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+
+class {{singularName}}Seeder extends BaseSeeder
+{
+    public function run()
+    {
+        //
+    }
+}

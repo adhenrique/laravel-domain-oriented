@@ -20,6 +20,8 @@ class Builder
         'FilterService' => 'app/Domain/%s/',
         'ValidateService' => 'app/Domain/%s/',
         'Migration' => 'database/migrations/',
+        'Factory' => 'database/factories/',
+        'Seeder' => 'database/seeders/',
     ];
     private Collection $names;
 

@@ -26,6 +26,8 @@ class CreateDomainTest extends BasicTestCase
         'FilterService' => 'app/Domain/%s/',
         'ValidateService' => 'app/Domain/%s/',
         'Migration' => 'database/migrations/',
+        'Factory' => 'database/factories/',
+        'Seeder' => 'database/seeders/',
     ];
     private string $domainName = 'Test';
     private string $tableName = '';
