@@ -47,7 +47,7 @@ You must be asking yourself:
 3. There are a lot of files, how do I build it all?  
    A. It's simple, get a coffee and let's do it...
    
-## Instalação
+## Setup
 1. Run this Composer command to install the latest version  
 ```bash
 $ composer require adhenrique/laravel-domain-oriented
