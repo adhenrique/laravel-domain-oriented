@@ -114,7 +114,7 @@ class DummyValidateService extends ValidateService
     ];
 }
 ```
-### Confit routes
+### Config routes
 We follow [Laravel routes](https://laravel.com/docs/8.x/routing) pattern. But as we are dealing with API, modify the file `routes/api.php`, adding the following routes:
 ```php
 Route::get('dummies', 'App\Http\Controllers\DummyController@index');
@@ -177,7 +177,7 @@ You can filter and paginate the data on the listing routes. To do this, send a p
 
 ## Todo
 - [ ] CQRS
-- [ ] Suporte para versões antigas do Laravel
+- [ ] Support for old Laravel versions
 - [ ] Or Where filter
 - [ ] OOP improvements
 
