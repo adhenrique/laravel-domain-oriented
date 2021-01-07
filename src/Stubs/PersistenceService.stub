@@ -1,0 +1,16 @@
+<?php
+
+namespace App\Domain\{{singularName}};
+
+use LaravelDomainOriented\Services\PersistenceService;
+use LaravelDomainOriented\Models\PersistenceModel;
+
+class {{singularName}}PersistenceService extends PersistenceService
+{
+    protected PersistenceModel $model;
+
+    public function __construct({{singularName}}PersistenceModel $model)
+    {
+        $this->model = $model;
+    }
+}

@@ -20,13 +20,35 @@
             "role": "Developer"
         }
     ],
-    "autoload": {
-        "psr-4": {
-            "LaravelDomainOriented\\": "src/"
-        }
-    },
     "require": {},
     "require-dev": {
-        "laravel/framework": "^8.19"
+        "orchestra/testbench": "^6.7",
+        "phpunit/phpunit": "^9.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "LaravelDomainOriented\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "LaravelDomainOriented\\Tests\\": "tests",
+            "App\\": "vendor/orchestra/testbench-core/laravel/app"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
+
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "LaravelDomainOriented\\ServiceProvider"
+            ]
+        }
     }
 }

@@ -1,0 +1,21 @@
+<?php
+
+namespace App\Domain\{{singularName}};
+
+use LaravelDomainOriented\Models\PersistenceModel;
+
+class {{singularName}}PersistenceModel extends PersistenceModel
+{
+    protected $table = '{{tableName}}';
+
+    protected $fillable = [
+        'id',
+        'name',
+    ];
+
+    // SCOPES
+    public function scopeDefault($query)
+    {
+        return $query->whereNull('inactivated_by');
+    }
+}

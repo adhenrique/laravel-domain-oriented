@@ -1,0 +1,19 @@
+<?php
+
+namespace Database\Factories;
+
+use App\Domain\{{singularName}}\{{singularName}}PersistenceModel;
+use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
+
+class {{singularName}}Factory extends Factory
+{
+    protected $model = {{singularName}}PersistenceModel::class;
+
+    public function definition()
+    {
+        return [
+            //
+        ];
+    }
+}

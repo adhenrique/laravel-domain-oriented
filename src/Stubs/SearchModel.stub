@@ -1,0 +1,16 @@
+<?php
+
+namespace App\Domain\{{singularName}};
+
+use LaravelDomainOriented\Models\SearchModel;
+
+class {{singularName}}SearchModel extends SearchModel
+{
+    protected $table = '{{tableName}}';
+
+    // SCOPES
+    public function scopeDefault($query)
+    {
+        return $query->whereNull('inactivated_by');
+    }
+}
