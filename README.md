@@ -177,7 +177,7 @@ You can filter and paginate the data on the listing routes. To do this, send a p
 
 ## Todo
 - [ ] CQRS
-- [ ] Suporte para versões antigas do Laravel
+- [ ] Support for old Laravel versions
 - [ ] Or Where filter
 - [ ] OOP improvements
 
