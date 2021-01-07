@@ -114,7 +114,7 @@ class DummyValidateService extends ValidateService
     ];
 }
 ```
-### Confit routes
+### Config routes
 We follow [Laravel routes](https://laravel.com/docs/8.x/routing) pattern. But as we are dealing with API, modify the file `routes/api.php`, adding the following routes:
 ```php
 Route::get('dummies', 'App\Http\Controllers\DummyController@index');
