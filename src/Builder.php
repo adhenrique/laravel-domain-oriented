@@ -25,11 +25,6 @@ class Builder
     ];
     private Collection $names;
 
-    public function __construct()
-    {
-        $this->createDomainsFile();
-    }
-
     public function prepare(): array
     {
         $exists = [];
@@ -175,17 +170,6 @@ class Builder
     public function createDomainFolder()
     {
         File::ensureDirectoryExists($this->getDomainFolder());
-    }
-
-    public function createDomainsFile()
-    {
-        $filePath = app_path('domains.php');
-        $exists = File::exists($filePath);
-        $stubFile = File::get(__DIR__.'/Stubs/domains.stub');
-
-        if (!$exists) {
-            File::put($filePath, $stubFile);
-        }
     }
 
     public function insertDomain(): void

@@ -2,6 +2,7 @@
 
 namespace LaravelDomainOriented;
 
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider as LaravelServiceProvider;
 use LaravelDomainOriented\Commands\CreateDomain;
@@ -20,11 +21,14 @@ class ServiceProvider extends LaravelServiceProvider
             CreateDomain::class,
             RemoveDomain::class,
         ]);
+
+        $this->createDomainsFile();
+        $this->registerPolicies();
     }
 
     public function register()
     {
-        $this->registerPolicies();
+        //
     }
 
     private function registerPolicies()
@@ -34,6 +38,17 @@ class ServiceProvider extends LaravelServiceProvider
         foreach ($domainNames as $domainName) {
             $policy = 'App\\Domain\\'.$domainName.'\\'.$domainName.'Policy';
             Gate::policy('Illuminate\Database\Eloquent\Model', $policy);
+        }
+    }
+
+    private function createDomainsFile()
+    {
+        $filePath = app_path('domains.php');
+        $exists = File::exists($filePath);
+        $stubFile = File::get(__DIR__.'/Stubs/domains.stub');
+
+        if (!$exists) {
+            File::put($filePath, $stubFile);
         }
     }
 }

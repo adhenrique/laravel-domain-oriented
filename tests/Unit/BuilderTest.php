@@ -32,6 +32,7 @@ class BuilderTest extends BasicTestCase
         $this->filesystem = new Filesystem();
         $this->builder = new Builder();
         $this->builder->setNames();
+        $this->builder->createDomainFolder();
     }
 
     /** @test **/
@@ -222,7 +223,6 @@ class DummyController extends Controller
     public function it_should_insert_domain_name_to_file()
     {
         $domainName = 'Test';
-        $this->builder->createDomainsFile();
         $this->builder->setNames($domainName);
         $this->builder->insertDomain();
 
@@ -236,7 +236,6 @@ class DummyController extends Controller
     public function it_should_remove_domain_name_to_file()
     {
         $domainName = 'Test';
-        $this->builder->createDomainsFile();
         $this->builder->setNames($domainName);
         $this->builder->removeDomain();
 
