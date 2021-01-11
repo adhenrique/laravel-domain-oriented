@@ -29,9 +29,8 @@ class BuilderTest extends BasicTestCase
     {
         parent::setUp();
         $this->filesystem = new Filesystem();
-        $this->builder = new Builder($this->filesystem);
+        $this->builder = new Builder();
         $this->builder->setNames();
-        $this->builder->createDomainFolder();
     }
 
     /** @test **/
@@ -85,7 +84,6 @@ class BuilderTest extends BasicTestCase
 
 namespace App\Http\Controllers;
 
-use App\Domain\Dummy\DummyDataService;
 use App\Domain\Dummy\DummyPersistenceService;
 use App\Domain\Dummy\DummyResource;
 use App\Domain\Dummy\DummySearchService;
@@ -217,5 +215,33 @@ class DummyController extends Controller
         }
 
         $this->assertEquals($totalFiles, $createdFiles);
+    }
+
+    /** @test **/
+    public function it_should_insert_domain_name_to_file()
+    {
+        $domainName = 'Test';
+        $this->builder->createDomainsFile();
+        $this->builder->setNames($domainName);
+        $this->builder->insertDomain();
+
+        $path = app_path('domains.php');
+        $domains = require $path;
+
+        $this->assertContains($domainName, $domains);
+    }
+
+    /** @test **/
+    public function it_should_remove_domain_name_to_file()
+    {
+        $domainName = 'Test';
+        $this->builder->createDomainsFile();
+        $this->builder->setNames($domainName);
+        $this->builder->removeDomain();
+
+        $path = app_path('domains.php');
+        $domains = require $path;
+
+        $this->assertNotContains($domainName, $domains);
     }
 }

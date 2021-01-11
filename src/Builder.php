@@ -3,13 +3,12 @@
 namespace LaravelDomainOriented;
 
 use Carbon\Carbon;
-use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 
 class Builder
 {
-    private Filesystem $filesystem;
     private array $filesPaths = [
         'Controller' => 'app/Http/Controllers/',
         'Resource' => 'app/Domain/%s/',
@@ -25,9 +24,9 @@ class Builder
     ];
     private Collection $names;
 
-    public function __construct(Filesystem $filesystem)
+    public function __construct()
     {
-        $this->filesystem = $filesystem;
+        $this->createDomainsFile();
     }
 
     public function prepare(): array
@@ -41,6 +40,8 @@ class Builder
             }
         }
 
+        clearstatcache();
+
         return array_filter($exists);
     }
 
@@ -49,6 +50,8 @@ class Builder
         foreach ($this->filesPaths as $stubName => $finalPath) {
             $this->createFile($stubName, $finalPath);
         }
+
+        $this->insertDomain();
     }
 
     public function clear()
@@ -56,11 +59,13 @@ class Builder
         foreach ($this->filesPaths as $stubName => $finalPath) {
             $this->removeFile($stubName, $finalPath);
         }
+
+        $this->removeDomain();
     }
 
     public function createFile(string $stubName, string $finalPath): void
     {
-        $stubFile = $this->filesystem->get($this->getStub($stubName));
+        $stubFile = File::get($this->getStub($stubName));
         $content = $this->replacePlaceholders($stubFile);
         $path = base_path(sprintf($finalPath, $this->getDomainName()));
         $fileName = $this->getName('singularName', 'Dummy') . $stubName . '.php';
@@ -71,7 +76,7 @@ class Builder
         }
 
         $file = $path.$fileName;
-        $this->filesystem->put($file, $content);
+        File::put($file, $content);
     }
 
     // todo - we can use glob function as well, for the other files
@@ -83,10 +88,10 @@ class Builder
         $file = $path.$fileName;
 
         if ($stubName === 'Migration') {
-            $file = $this->filesystem->glob($path.'*_create_'.$this->getName('tableName').'_table.php');
+            $file = File::glob($path.'*_create_'.$this->getName('tableName').'_table.php');
         }
 
-        $this->filesystem->delete($file);
+        File::delete($file);
     }
 
     public function getStub($stubName): string
@@ -144,7 +149,7 @@ class Builder
     private function checkMigrationExists(): string
     {
         $migrationPath = base_path('database/migrations');
-        $migrationFiles = $this->filesystem->glob($migrationPath.'/*.php');
+        $migrationFiles = File::glob($migrationPath.'/*.php');
 
         $exists = false;
 
@@ -163,11 +168,47 @@ class Builder
         $fileName = $this->getName('singularName', 'Dummy') . $stubName . '.php';
         $file = $path.$fileName;
 
-        return $this->filesystem->exists($file) ? $file : false;
+        return File::exists($file) ? $file : false;
     }
 
     public function createDomainFolder()
     {
-        $this->filesystem->ensureDirectoryExists($this->getDomainFolder());
+        File::ensureDirectoryExists($this->getDomainFolder());
+    }
+
+    public function createDomainsFile()
+    {
+        $filePath = app_path('domains.php');
+        $exists = File::exists($filePath);
+        $stubFile = File::get(__DIR__.'/Stubs/domains.stub');
+
+        if (!$exists) {
+            File::put($filePath, $stubFile);
+        }
+    }
+
+    public function insertDomain(): void
+    {
+        $path = app_path('domains.php');
+        $domains = require ($path);
+
+        array_push($domains, $this->getDomainName());
+        $domains = array_unique($domains);
+
+        $content = "<?php \n\nreturn " . preg_replace("/[0-9]+ \=\>/i", '',var_export($domains, true)). ';';
+        File::replace($path, $content);
+    }
+
+    public function removeDomain()
+    {
+        $path = app_path('domains.php');
+        $domains = require ($path);
+
+        if (($key = array_search($this->getDomainName(), $domains)) !== false) {
+            unset($domains[$key]);
+        }
+
+        $content = "<?php \n\nreturn " . preg_replace("/[0-9]+ \=\>/i", '',var_export($domains, true)). ';';
+        File::replace($path, $content);
     }
 }
