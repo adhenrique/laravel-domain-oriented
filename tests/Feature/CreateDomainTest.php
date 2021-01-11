@@ -28,6 +28,7 @@ class CreateDomainTest extends BasicTestCase
         'Migration' => 'database/migrations/',
         'Factory' => 'database/factories/',
         'Seeder' => 'database/seeders/',
+        'Policy' => 'app/Domain/%s/',
     ];
     private string $domainName = 'Test';
     private string $tableName = '';

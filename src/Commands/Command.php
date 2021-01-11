@@ -2,17 +2,16 @@
 
 namespace LaravelDomainOriented\Commands;
 
-use Illuminate\Filesystem\Filesystem;
 use LaravelDomainOriented\Builder;
 
 class Command extends \Illuminate\Console\Command
 {
     protected Builder $builder;
 
-    public function __construct(Filesystem $filesystem)
+    public function __construct()
     {
         parent::__construct();
-        $this->builder = new Builder($filesystem);
+        $this->builder = new Builder();
     }
 
     protected function getNameInput(): string

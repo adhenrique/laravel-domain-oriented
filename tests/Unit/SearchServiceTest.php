@@ -2,9 +2,16 @@
 
 namespace Tests\Unit;
 
+use App\Domain\Test\TestFilterService;
+use App\Domain\Test\TestSearchModel;
 use App\Domain\Test\TestSearchService;
+use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use LaravelDomainOriented\Models\SearchModel;
+use LaravelDomainOriented\Services\FilterService;
+use LaravelDomainOriented\Services\SearchService;
 use LaravelDomainOriented\Tests\Cases\DBTestCase;
 
 class SearchServiceTest extends DBTestCase
@@ -94,5 +101,31 @@ class SearchServiceTest extends DBTestCase
         $this->expectException(ModelNotFoundException::class);
 
         $searchService->findById(15);
+    }
+
+    /** @test **/
+    public function it_should_use_before_search_method_and_return_no_data()
+    {
+        $searchService = $this->app->make(MyCustomSearchService::class);
+        $request = new Request();
+        $data = $searchService->all($request);
+
+        $this->assertCount(0, $data);
+    }
+}
+
+class MyCustomSearchService extends SearchService {
+    protected SearchModel $model;
+    protected FilterService $filterService;
+
+    public function __construct(TestSearchModel $model, TestFilterService $filterService)
+    {
+        $this->model = $model;
+        $this->filterService = $filterService;
+    }
+
+    public function beforeSearch(Builder $builder, Guard $auth): Builder
+    {
+        return $builder->where('name', 'xxxx');
     }
 }
