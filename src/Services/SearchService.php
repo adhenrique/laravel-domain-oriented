@@ -2,7 +2,10 @@
 
 namespace LaravelDomainOriented\Services;
 
+use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use LaravelDomainOriented\Models\SearchModel;
 
 class SearchService
@@ -19,7 +22,9 @@ class SearchService
 
     public function all(Request $request)
     {
-        $builder = $this->filterService->apply($this->model->query(), $request);
+        $builder = $this->beforeSearch($this->model->query(), Auth::guard());
+
+        $builder = $this->filterService->apply($builder, $request);
         $paginate = $request->get('paginate');
 
         $page = $paginate['page'] ?? 0;
@@ -34,11 +39,18 @@ class SearchService
 
     public function findById(int $id)
     {
-        return $this->model->findOrFail($id);
+        $builder = $this->beforeSearch($this->model->query(), Auth::guard());
+
+        return $builder->findOrFail($id);
     }
 
     public function getModel(): SearchModel
     {
         return $this->model;
+    }
+
+    public function beforeSearch(Builder $builder, Guard $auth): Builder
+    {
+        return $builder;
     }
 }
