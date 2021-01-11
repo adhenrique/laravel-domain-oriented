@@ -36,4 +36,9 @@ class SearchService
     {
         return $this->model->findOrFail($id);
     }
+
+    public function getModel(): SearchModel
+    {
+        return $this->model;
+    }
 }

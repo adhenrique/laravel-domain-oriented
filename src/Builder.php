@@ -21,6 +21,7 @@ class Builder
         'Migration' => 'database/migrations/',
         'Factory' => 'database/factories/',
         'Seeder' => 'database/seeders/',
+        'Policy' => 'app/Domain/%s/',
     ];
     private Collection $names;
 

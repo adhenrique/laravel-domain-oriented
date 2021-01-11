@@ -28,6 +28,7 @@ class RemoveDomainTest extends BasicTestCase
         'Migration' => 'database/migrations/',
         'Factory' => 'database/factories/',
         'Seeder' => 'database/seeders/',
+        'Policy' => 'app/Domain/%s/',
     ];
 
     public function setUp(): void

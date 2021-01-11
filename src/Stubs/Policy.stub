@@ -1,0 +1,10 @@
+<?php
+
+namespace App\Domain\{{singularName}};
+
+use LaravelDomainOriented\Policy\Policy;
+
+class {{singularName}}Policy extends Policy
+{
+    //
+}
