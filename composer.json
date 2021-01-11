@@ -1,8 +1,8 @@
 {
     "name": "adhenrique/laravel-domain-oriented",
-    "version": "1.0.0",
     "description": "Build a domain-oriented application on Laravel Framework",
     "homepage": "https://github.com/adhenrique/laravel-domain-oriented",
+    "license": "MIT",
     "keywords": [
         "ddd",
         "domain driven design",
