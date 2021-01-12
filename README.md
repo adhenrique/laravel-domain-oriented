@@ -18,6 +18,7 @@ app
 │       ├── DummyFilterService.php
 │       ├── DummyPersistenceModel.php
 │       ├── DummyPersistenceService.php
+│       ├── DummyPolicy.php
 │       ├── DummyResource.php
 │       ├── DummySearchModel.php
 │       ├── DummySearchService.php
@@ -83,6 +84,10 @@ Our Migrations follow the [Laravel Migration Structure](https://laravel.com/docs
 Here, too, we follow the Laravel way of doing things:
 - [Factories](https://laravel.com/docs/8.x/database-testing)
 - [Seeders](https://laravel.com/docs/8.x/seeding)
+
+### Adjust your Policy
+Again, Policies follow the [Laravel Policy Authorization](https://laravel.com/docs/8.x/authorization#writing-policies)
+> Note: You don't have to worry about registering your policies, as we do it behind the scenes. However, here we follow a class name convention. When creating a domain, your class must be named SomethingPolicy and belong to the App\Domain\Something namespace.
 
 ### Config your validations
 ValidateService is located at `app/Domain/YourDomainName/*`:
