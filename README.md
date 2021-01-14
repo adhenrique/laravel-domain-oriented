@@ -130,6 +130,49 @@ Route::delete('dummies/{id}', 'App\Http\Controllers\DummyController@destroy');
 ```
 
 ## Using
+### Before Search filters
+In the SearchService class you have two methods that help you to pre-start queries according to your needs: `beforeAll` and` beforeFindById`.
+Each method receives 2 parameters: `builder` with the Eloquent instance started and `auth`, with the user session - if are logged in.
+You just need to override the methods, but ensure that the return is eloquent's `Builder`. Look:
+```php
+class DummySearchService extends SearchService
+{
+    protected SearchModel $model;
+    protected FilterService $filterService;
+
+    public function __construct(DummySearchModel $model, DummyFilterService $filterService)
+    {
+        $this->model = $model;
+        $this->filterService = $filterService;
+    }
+
+    public function beforeAll(Builder $builder, Guard $auth): Builder
+    {
+        return $builder;
+    }
+
+    public function beforeFindById(Builder $builder, Guard $auth): Builder
+    {
+        return $builder;
+    }
+}
+```
+In my use case, logged in as admin, I usually filter from the list of users my own user. Look:
+```php
+// ...
+public function beforeAll(Builder $builder, Guard $auth): Builder
+{
+    return $this->removeLoggedFromSearches($builder, $auth);
+}
+
+private function removeLoggedFromSearches($builder, $auth)
+{
+    $id = $auth->id();
+    return $builder->where('id', '<>', $id);
+}
+```
+
+
 ### Searching with filters
 You can filter and paginate the data on the listing routes. To do this, send a payload on the request, using your favorite client:
 
@@ -185,6 +228,7 @@ You can filter and paginate the data on the listing routes. To do this, send a p
 - [ ] Support for old Laravel versions
 - [ ] Or Where filter
 - [ ] OOP improvements
+- [ ] Add beforeAll and beforeFindById tests
 
 ## Testing
 ```bash

@@ -22,7 +22,7 @@ class SearchService
 
     public function all(Request $request)
     {
-        $builder = $this->beforeSearch($this->model->query(), Auth::guard());
+        $builder = $this->beforeAll($this->model->query(), Auth::guard());
 
         $builder = $this->filterService->apply($builder, $request);
         $paginate = $request->get('paginate');
@@ -39,7 +39,7 @@ class SearchService
 
     public function findById(int $id)
     {
-        $builder = $this->beforeSearch($this->model->query(), Auth::guard());
+        $builder = $this->beforeFindById($this->model->query(), Auth::guard());
 
         return $builder->findOrFail($id);
     }
@@ -49,7 +49,12 @@ class SearchService
         return $this->model->getTable();
     }
 
-    public function beforeSearch(Builder $builder, Guard $auth): Builder
+    public function beforeAll(Builder $builder, Guard $auth): Builder
+    {
+        return $builder;
+    }
+
+    public function beforeFindById(Builder $builder, Guard $auth): Builder
     {
         return $builder;
     }
