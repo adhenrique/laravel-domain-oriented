@@ -37,4 +37,9 @@ class PersistenceService
         $model->delete();
         return true;
     }
+
+    public function getTableName(): string
+    {
+        return $this->model->getTable();
+    }
 }

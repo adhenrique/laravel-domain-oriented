@@ -5,6 +5,7 @@ namespace LaravelDomainOriented;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider as LaravelServiceProvider;
+use Illuminate\Support\Str;
 use LaravelDomainOriented\Commands\CreateDomain;
 use LaravelDomainOriented\Commands\RemoveDomain;
 
@@ -36,8 +37,11 @@ class ServiceProvider extends LaravelServiceProvider
         $domainNames = require (app_path('domains.php'));
 
         foreach ($domainNames as $domainName) {
-            $policy = 'App\\Domain\\'.$domainName.'\\'.$domainName.'Policy';
-            Gate::policy('Illuminate\Database\Eloquent\Model', $policy);
+            $namespace = 'App\\Domain\\'.$domainName;
+            $policy = $namespace.'\\'.$domainName.'Policy';
+            $tableName = Str::snake(Str::pluralStudly($domainName));
+
+            Gate::policy($tableName, $policy);
         }
     }
 
