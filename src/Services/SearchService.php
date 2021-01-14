@@ -44,9 +44,9 @@ class SearchService
         return $builder->findOrFail($id);
     }
 
-    public function getModel(): SearchModel
+    public function getTableName(): string
     {
-        return $this->model;
+        return $this->model->getTable();
     }
 
     public function beforeSearch(Builder $builder, Guard $auth): Builder

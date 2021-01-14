@@ -30,7 +30,7 @@ class Controller extends BaseController
 
     public function index(Request $request)
     {
-        $this->authorize('index', $this->searchService->getModel());
+        $this->authorize('index', $this->searchService->getTableName());
 
         $data = $this->searchService->all($request);
         return $this->resource::collection($data);
@@ -38,7 +38,7 @@ class Controller extends BaseController
 
     public function show(Request $request, int $id)
     {
-        $this->authorize('show', $this->searchService->getModel());
+        $this->authorize('show', $this->searchService->getTableName());
 
         $request = $request->merge(['id' => $id]);
         $validatedData = $this->validateService->handle($request->all(), ValidateService::SHOW);
@@ -49,7 +49,7 @@ class Controller extends BaseController
 
     public function store(Request $request): JsonResponse
     {
-        $this->authorize('store', $this->searchService->getModel());
+        $this->authorize('store', $this->persistenceService->getTableName());
 
         $validatedData = $this->validateService->handle($request->all(), ValidateService::STORE);
         $id = $this->persistenceService->store($validatedData);
@@ -58,7 +58,7 @@ class Controller extends BaseController
 
     public function update(Request $request, $id): JsonResponse
     {
-        $this->authorize('update', $this->searchService->getModel());
+        $this->authorize('update', $this->persistenceService->getTableName());
 
         $request = $request->merge(['id' => $id]);
         $validatedData = $this->validateService->handle($request->all(), ValidateService::UPDATE);
@@ -69,7 +69,7 @@ class Controller extends BaseController
 
     public function destroy(Request $request, int $id): JsonResponse
     {
-        $this->authorize('destroy', $this->searchService->getModel());
+        $this->authorize('destroy', $this->persistenceService->getTableName());
 
         $request = $request->merge(['id' => $id]);
         $validatedData = $this->validateService->handle($request->all(), ValidateService::DESTROY);
