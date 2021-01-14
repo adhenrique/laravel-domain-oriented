@@ -185,6 +185,7 @@ You can filter and paginate the data on the listing routes. To do this, send a p
 - [ ] Support for old Laravel versions
 - [ ] Or Where filter
 - [ ] OOP improvements
+- [ ] Add beforeAll and beforeFindById tests
 
 ## Testing
 ```bash
