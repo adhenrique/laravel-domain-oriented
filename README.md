@@ -229,6 +229,7 @@ You can filter and paginate the data on the listing routes. To do this, send a p
 - [ ] Or Where filter
 - [ ] OOP improvements
 - [ ] Add beforeAll and beforeFindById tests
+- [ ] Ask to confirm name
 
 ## Testing
 ```bash
