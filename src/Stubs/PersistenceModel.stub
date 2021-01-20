@@ -2,13 +2,10 @@
 
 namespace App\Domain\{{singularName}};
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use LaravelDomainOriented\Models\PersistenceModel;
 
 class {{singularName}}PersistenceModel extends PersistenceModel
 {
-    use HasFactory;
-
     protected $table = '{{tableName}}';
 
     protected $fillable = [
