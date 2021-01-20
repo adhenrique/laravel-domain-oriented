@@ -38,7 +38,7 @@ class Controller extends BaseController
 
     public function show(Request $request, int $id)
     {
-        $this->authorize('show', $this->searchService->getTableName());
+        $this->authorize('show', [$this->searchService->getTableName(), $id]);
 
         $request = $request->merge(['id' => $id]);
         $validatedData = $this->validateService->handle($request->all(), ValidateService::SHOW);
@@ -58,7 +58,7 @@ class Controller extends BaseController
 
     public function update(Request $request, $id): JsonResponse
     {
-        $this->authorize('update', $this->persistenceService->getTableName());
+        $this->authorize('update', [$this->persistenceService->getTableName(), $id]);
 
         $request = $request->merge(['id' => $id]);
         $validatedData = $this->validateService->handle($request->all(), ValidateService::UPDATE);
@@ -69,7 +69,7 @@ class Controller extends BaseController
 
     public function destroy(Request $request, int $id): JsonResponse
     {
-        $this->authorize('destroy', $this->persistenceService->getTableName());
+        $this->authorize('destroy', [$this->persistenceService->getTableName(), $id]);
 
         $request = $request->merge(['id' => $id]);
         $validatedData = $this->validateService->handle($request->all(), ValidateService::DESTROY);
