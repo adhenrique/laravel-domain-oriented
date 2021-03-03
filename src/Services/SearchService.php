@@ -13,6 +13,7 @@ class SearchService
     protected SearchModel $model;
     protected FilterService $filterService;
     protected int $perPage = 15;
+    protected int $paginateOffset = 0;
 
     public function __construct(SearchModel $model, FilterService $filterService)
     {
@@ -32,7 +33,7 @@ class SearchService
 
         if ($paginate) {
             return $builder
-                ->paginate($perPage, [$this->model->getTable().".*"], 'page', $page);
+                ->paginate($perPage, [$this->model->getTable().".*"], 'page', $page + $this->paginateOffset);
         }
         return $builder->get();
     }
