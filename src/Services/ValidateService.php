@@ -20,7 +20,7 @@ class ValidateService
         return Validator::validate($data, $this->getRules($action));
     }
 
-    private function getRules(string $action = null): array
+    public function getRules(string $action = null): array
     {
         $rules = $this->rules;
 

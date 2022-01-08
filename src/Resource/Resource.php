@@ -13,7 +13,7 @@ abstract class Resource extends JsonResource
         return [
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'inactivated_at' => $this->updated_at,
+            'inactivated_at' => $this->inactivated_at,
             'deleted_at' => $this->deleted_at,
         ];
     }
